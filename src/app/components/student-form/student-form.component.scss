@@ -1,4 +1,4 @@
-.teacher-form-backdrop {
+.student-form-backdrop {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
@@ -9,7 +9,7 @@
   z-index: 1000;
 }
 
-.teacher-form-card {
+.student-form-card {
   width: 100%;
   max-width: 600px;
   max-height: 80vh;
@@ -21,7 +21,7 @@
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.teacher-form-header {
+.student-form-header {
   position: relative;
   padding: 1.75rem 1.75rem 1.25rem 1.75rem;
   text-align: center;
@@ -36,7 +36,7 @@
   }
 }
 
-.teacher-form-close-btn {
+.student-form-close-btn {
   position: absolute;
   top: 1.25rem;
   right: 1.25rem;
@@ -46,7 +46,7 @@
   margin: 0;
 }
 
-.teacher-form-form {
+.student-form-form {
   padding: 1.75rem;
 
   ion-item {
@@ -86,7 +86,7 @@
   }
 }
 
-.teacher-form-actions {
+.student-form-actions {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
@@ -99,15 +99,15 @@
 }
 
 @media (max-width: 600px) {
-  .teacher-form-backdrop {
+  .student-form-backdrop {
     padding: 2rem;
   }
 
-  .teacher-form-card {
+  .student-form-card {
     max-height: 90vh;
   }
 
-  .teacher-form-form {
+  .student-form-form {
     padding: 1.25rem;
   }
 }

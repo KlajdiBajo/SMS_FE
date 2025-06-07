@@ -9,146 +9,75 @@
   z-index: 1000;
 }
 
-.teacher-details-card {
+.details-container {
+  background: white;
+  border-radius: 16px;
   width: 100%;
-  max-width: 450px;
+  max-width: 600px;
   max-height: 85vh;
   overflow-y: auto;
-  margin: 0 auto;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  border-radius: 16px;
-  --background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.details-content {
+  padding: 2rem;
   position: relative;
 }
 
-.teacher-details-header {
-  position: relative;
-  padding: 2rem 1.5rem 1rem 1.5rem;
-  text-align: center;
-  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-secondary) 100%);
-  border-radius: 16px 16px 0 0;
-  color: white;
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  --padding-start: 8px;
+  --padding-end: 8px;
+  margin: 0;
+  height: 30px;
+  width: 30px;
 
-  .close-button {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    --color: white;
-    --background: rgba(255, 255, 255, 0.1);
-    min-width: 40px;
-    min-height: 40px;
-    backdrop-filter: blur(10px);
-    border-radius: 50%;
-
-    &:hover {
-      --background: rgba(255, 255, 255, 0.2);
-    }
-  }
-
-  .avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1rem auto;
-    font-size: 2rem;
-    font-weight: 700;
-    color: white;
-    backdrop-filter: blur(10px);
-    border: 3px solid rgba(255, 255, 255, 0.3);
-  }
-
-  .teacher-name {
-    font-size: 1.75rem;
-    font-weight: 700;
-    margin: 0 0 0.5rem 0;
-    color: white;
-  }
-
-  .teacher-department {
-    font-size: 1.1rem;
-    opacity: 0.9;
-    font-weight: 500;
-    margin: 0;
+  &:hover {
+    --background: rgba(0, 0, 0, 0.05);
   }
 }
 
-.teacher-details-content {
-  padding: 1.5rem;
+.info-grid {
+  display: grid;
+  gap: 2rem;
+  margin-bottom: 2rem;
 }
 
-.detail-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.detail-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  padding: 1rem;
-  background: var(--ion-color-light);
-  border-radius: 12px;
-  border-left: 4px solid var(--ion-color-primary);
-
-  .detail-label {
-    font-size: 0.85rem;
+.info-section {
+  h3 {
+    color: var(--ion-color-primary);
+    margin: 0 0 1rem;
+    font-size: 1.25rem;
     font-weight: 600;
-    color: var(--ion-color-medium);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+  }
+}
+
+.info-list {
+  display: grid;
+  gap: 0.75rem;
+
+  p {
     margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
   }
 
-  .detail-value {
-    font-size: 1rem;
+  .label {
     font-weight: 500;
-    color: var(--ion-color-dark);
-    margin: 0;
-    word-break: break-word;
-
-    &.email {
-      color: var(--ion-color-primary);
-      text-decoration: none;
-      
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-
-    &.phone {
-      color: var(--ion-color-secondary);
-      text-decoration: none;
-      
-      &:hover {
-        text-decoration: underline;
-      }
-    }
+    color: var(--ion-color-medium);
+    margin-right: 0.5rem;
   }
 }
 
 .action-buttons {
-  padding: 0 1.5rem 1.5rem 1.5rem;
-  display: flex;
-  gap: 0.75rem;
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
 
   ion-button {
-    flex: 1;
-    height: 48px;
-    font-weight: 600;
-    border-radius: 12px;
-
-    &[color="primary"] {
-      --background: var(--ion-color-primary);
-    }
-
-    &[fill="outline"] {
-      --border-width: 2px;
-    }
+    margin: 0;
   }
 }
 
@@ -212,7 +141,7 @@
     padding: 0.25rem;
     padding-top: 1rem;
   }
-  
+
   .teacher-details-card {
     border-radius: 8px;
   }

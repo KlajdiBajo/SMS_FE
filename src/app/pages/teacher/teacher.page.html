@@ -1,0 +1,98 @@
+<div class="teachers">
+  <!-- Header -->
+  <div class="teachers__header">
+    <div>
+      <h1 class="teachers__title">Teachers</h1>
+      <p class="teachers__subtitle">Manage your school's teaching staff</p>
+    </div>
+    <ion-button (click)="openAddForm()" class="teachers__add-btn">
+      <ion-icon name="add" slot="start"></ion-icon>
+      Add Teacher
+    </ion-button>
+  </div>
+
+  <!-- Search -->
+  <ion-card class="teachers__search">
+    <ion-card-content>
+      <ion-searchbar
+        placeholder="Search teachers by name, email, department, or subject..."
+        [(ngModel)]="searchTerm"
+      ></ion-searchbar>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Teachers List -->
+  <div *ngIf="filteredTeachers.length === 0" class="teachers__no-results">
+    <ion-icon
+      name="people"
+      class="h-12 w-12 text-gray-400 mx-auto mb-4"
+    ></ion-icon>
+    <p>No teachers found matching your search.</p>
+  </div>
+
+  <div class="teachers__grid">
+    <ion-card *ngFor="let teacher of filteredTeachers" class="teachers__card">
+      <ion-card-header class="card__header">
+        <div class="flex justify-between items-start">
+          <div>
+            <h3 class="teachers__card-name">
+              {{ teacher.firstName }} {{ teacher.lastName }}
+            </h3>
+            <p class="teachers__card-department">
+              {{ teacher.department }} Department
+            </p>
+            <p class="teachers__card-subject">{{ teacher.subject }}</p>
+          </div>
+        </div>
+      </ion-card-header>
+      <ion-card-content class="card__content">
+        <div class="teachers__card-details">
+          <p>{{ teacher.email }}</p>
+          <p>{{ teacher.phone }}</p>
+          <p>Hired: {{ teacher.hireDate | date }}</p>
+        </div>
+        <div class="teachers__card-actions">
+          <ion-button
+            size="small"
+            fill="outline"
+            (click)="openViewDetails(teacher)"
+          >
+            <ion-icon name="eye" slot="start"></ion-icon>
+            View
+          </ion-button>
+          <ion-button
+            size="small"
+            fill="outline"
+            (click)="openEditForm(teacher)"
+          >
+            <ion-icon name="create" slot="start"></ion-icon>
+            Edit
+          </ion-button>
+          <ion-button
+            size="small"
+            fill="outline"
+            color="danger"
+            (click)="handleDeleteTeacher(teacher.id)"
+          >
+            <ion-icon name="trash"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Teacher Form Modal -->
+  <app-teacher-form
+    *ngIf="isFormOpen"
+    [teacher]="editingTeacher"
+    (submitForm)="editingTeacher ? handleEditTeacher($event) : handleAddTeacher($event)"
+    (close)="closeForm()"
+  ></app-teacher-form>
+
+  <!-- Teacher Details Modal -->
+  <app-teacher-details
+    *ngIf="isDetailsOpen && selectedTeacher"
+    [teacher]="selectedTeacher"
+    (close)="closeDetails()"
+  ></app-teacher-details>
+</div>

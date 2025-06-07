@@ -2,12 +2,13 @@
   width: 100%;
   max-width: 1200px;
   margin: 2rem auto 0 auto;
+  padding: 1rem;
 }
 
 .teachers__header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 1.5rem;
   flex-wrap: wrap;
 }
@@ -36,11 +37,12 @@
 
 .teachers__search {
   margin-bottom: 1.5rem;
-}
 
-.teachers__search-icon {
-  font-size: 1.2rem;
-  color: #888;
+  ion-searchbar {
+    --background: transparent;
+    --box-shadow: none;
+    padding: 0;
+  }
 }
 
 .teachers__grid {
@@ -51,16 +53,27 @@
 }
 
 .teachers__card {
+  margin: 0;
+  height: 100%;
   border-radius: 12px;
+
+  ion-card-header {
+    padding: 1rem;
+  }
+
+  ion-card-content {
+    padding: 0 1rem 1rem;
+  }
 }
 
 .teachers__card-name {
   font-size: 1.2rem;
   font-weight: 600;
+  margin: 0;
 }
 
 .teachers__card-department {
-  color: #3880ff;
+  color: var(--ion-color-primary);
   font-weight: 500;
   margin-bottom: 0.25rem;
 }
@@ -73,25 +86,38 @@
 .teachers__card-details {
   margin-bottom: 1rem;
   color: #444;
+
+  p {
+    margin: 0.5rem 0;
+    font-size: 0.875rem;
+  }
 }
 
 .teachers__card-actions {
   display: flex;
   gap: 0.5rem;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+
+  ion-button {
+    flex: 1;
+    min-width: 0;
+
+    &[color="danger"] {
+      flex: 0 0 auto;
+      width: auto;
+    }
+  }
 }
 
-.teachers__card-actions ion-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.teachers__no-results {
   text-align: center;
-  width: 100%;
-}
+  padding: 2rem;
+  color: var(--ion-color-medium);
 
-.teachers_no-results {
-  text-align: center;
-  color: #888;
-  padding: 2rem 0;
+  ion-icon {
+    font-size: 3rem;
+  }
 }
 
 @media (max-width: 600px) {
@@ -108,4 +134,4 @@
     width: 100%;
     min-width: 0;
   }
-} 
+}

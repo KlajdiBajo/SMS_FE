@@ -1,0 +1,135 @@
+<div *ngIf="isOpen" class="student-details-backdrop">
+  <div class="details-container">
+    <div class="details-content">
+      <ion-button fill="clear" (click)="onClose()" class="close-button">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+
+      <div class="info-grid">
+        <div class="info-section">
+          <h3>Personal Information</h3>
+          <div class="info-list">
+            <p><span class="label">Name:</span> {{ student.name }}</p>
+            <p><span class="label">Email:</span> {{ student.email }}</p>
+            <p><span class="label">Phone:</span> {{ student.phoneNumber }}</p>
+            <p>
+              <span class="label">Date of Birth:</span>
+              {{ student.dateOfBirth }}
+            </p>
+            <p><span class="label">Address:</span> {{ student.address }}</p>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <h3>Academic Information</h3>
+          <div class="info-list">
+            <p>
+              <span class="label">Status:</span>
+              <span
+                [ngClass]="{
+                  'status-active': student.status === 'active',
+                  'status-inactive': student.status === 'inactive',
+                  'status-other':
+                    student.status !== 'active' && student.status !== 'inactive'
+                }"
+                class="status-badge"
+              >
+                {{
+                  student.status.charAt(0).toUpperCase() +
+                    student.status.slice(1)
+                }}
+              </span>
+            </p>
+            <p>
+              <span class="label">Enrollment Date:</span>
+              {{ student.enrollmentDate }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="courses-section">
+        <div class="section-header">
+          <h3>Enrolled Courses</h3>
+          <ion-button
+            size="small"
+            (click)="showCourseModal = true"
+            [disabled]="coursesToAdd.length === 0"
+          >
+            <ion-icon name="add" slot="start"></ion-icon>
+            Add Course
+          </ion-button>
+        </div>
+
+        <div *ngIf="student.courses.length === 0" class="no-courses">
+          No courses enrolled
+        </div>
+
+        <div *ngIf="student.courses.length > 0" class="course-list">
+          <div *ngFor="let course of student.courses" class="course-item">
+            <div class="course-info">
+              <p class="course-name">{{ course.name }} ({{ course.code }})</p>
+              <p class="course-details">
+                {{ course.credits }} credits • Instructor:
+                {{ course.instructor }}
+              </p>
+            </div>
+            <ion-button
+              size="small"
+              fill="outline"
+              color="danger"
+              (click)="handleRemoveCourse(course.id)"
+            >
+              <ion-icon name="trash" slot="icon-only"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <ion-button expand="block" (click)="onEdit()">
+          Edit Student
+        </ion-button>
+        <ion-button color="danger" expand="block" (click)="handleDelete()">
+          Delete Student
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Association Modal -->
+  <div *ngIf="showCourseModal" class="course-modal-backdrop">
+    <div class="course-modal">
+      <div class="modal-header">
+        <h3>Add Course</h3>
+        <ion-button
+          fill="clear"
+          (click)="showCourseModal = false"
+          class="close-button"
+        >
+          <ion-icon name="close" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
+
+      <div class="modal-content">
+        <div class="course-list">
+          <div *ngFor="let course of coursesToAdd" class="course-item">
+            <div class="course-info">
+              <p class="course-name">{{ course.name }} ({{ course.code }})</p>
+              <p class="course-details">
+                {{ course.credits }} credits • {{ course.instructor }}
+              </p>
+            </div>
+            <ion-button size="small" (click)="handleAddCourse(course)">
+              Add
+            </ion-button>
+          </div>
+
+          <div *ngIf="coursesToAdd.length === 0" class="no-courses">
+            No more courses available
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

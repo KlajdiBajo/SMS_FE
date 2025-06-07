@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicModule, ModalController } from '@ionic/angular';
+import { IonicModule, ModalController, ToastController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { TeacherFormComponent } from '../components/teacher-form/teacher-form.component';
-import { TeacherDetailsComponent, Teacher } from '../components/teacher-details/teacher-details.component';
+import { TeacherFormComponent } from '../../components/teacher-form/teacher-form.component';
+import { TeacherDetailsComponent, Teacher } from '../../components/teacher-details/teacher-details.component';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -52,6 +52,8 @@ export class TeacherPage {
   editingTeacher: Teacher | null = null;
   selectedTeacher: Teacher | null = null;
 
+  constructor(private toastController: ToastController) { }
+
   get filteredTeachers(): Teacher[] {
     const term = this.searchTerm.toLowerCase();
     return this.teachers.filter(teacher =>
@@ -95,6 +97,7 @@ export class TeacherPage {
     };
     this.teachers = [...this.teachers, newTeacher];
     this.isFormOpen = false;
+    this.presentToast('Teacher added successfully');
   }
 
   handleEditTeacher(teacherData: Omit<Teacher, 'id'>) {
@@ -106,12 +109,38 @@ export class TeacherPage {
       );
       this.editingTeacher = null;
       this.isFormOpen = false;
+      this.presentToast('Teacher updated successfully');
     }
   }
 
-  handleDeleteTeacher(id: string) {
-    if (confirm('Are you sure you want to delete this teacher?')) {
-      this.teachers = this.teachers.filter(teacher => teacher.id !== id);
-    }
+  async handleDeleteTeacher(id: string) {
+    const alert = await this.toastController.create({
+      header: 'Confirm Delete',
+      message: 'Are you sure you want to delete this teacher?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Delete',
+          handler: () => {
+            this.teachers = this.teachers.filter(teacher => teacher.id !== id);
+            this.isDetailsOpen = false;
+            this.presentToast('Teacher deleted successfully');
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  private async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom'
+    });
+    await toast.present();
   }
 } 
