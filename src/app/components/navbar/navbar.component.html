@@ -34,89 +34,23 @@
           </ion-buttons>
         </ion-col>
 
-        <!-- Mobile Toggle Button - HAMBURGER STYLE -->
+        <!-- Mobile Toggle Button - MOBILE ONLY -->
         <ion-col 
           size="auto" 
-          class="navbar__mobile-col"
-          style="
-            display: flex !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-            z-index: 9999 !important;
-            padding: 4px !important;
-          "
+          class="ion-hide-md-up navbar__mobile-col"
         >
           <ion-button
             fill="clear"
             class="navbar__mobile-toggle"
             (click)="toggleMenu()"
-            style="
-              --background: transparent !important; 
-              --color: white !important;
-              color: white !important;
-              background: transparent !important;
-              border: 2px solid white !important;
-              border-radius: 6px !important;
-              min-width: 44px !important;
-              min-height: 44px !important;
-              display: flex !important;
-              opacity: 1 !important;
-              visibility: visible !important;
-              z-index: 9999 !important;
-              padding: 8px !important;
-            "
           >
             <div 
               class="hamburger-icon"
               [class.active]="isMenuOpen()"
-              style="
-                width: 20px;
-                height: 16px;
-                position: relative;
-                transform: rotate(0deg);
-                transition: 0.3s ease-in-out;
-                cursor: pointer;
-              "
             >
-              <span style="
-                display: block;
-                position: absolute;
-                height: 2px;
-                width: 100%;
-                background: white;
-                border-radius: 1px;
-                opacity: 1;
-                left: 0;
-                transform: rotate(0deg);
-                transition: 0.25s ease-in-out;
-                top: 0px;
-              " [ngClass]="{ 'top-active': isMenuOpen() }"></span>
-              <span style="
-                display: block;
-                position: absolute;
-                height: 2px;
-                width: 100%;
-                background: white;
-                border-radius: 1px;
-                opacity: 1;
-                left: 0;
-                transform: rotate(0deg);
-                transition: 0.25s ease-in-out;
-                top: 7px;
-              " [ngClass]="{ 'middle-active': isMenuOpen() }"></span>
-              <span style="
-                display: block;
-                position: absolute;
-                height: 2px;
-                width: 100%;
-                background: white;
-                border-radius: 1px;
-                opacity: 1;
-                left: 0;
-                transform: rotate(0deg);
-                transition: 0.25s ease-in-out;
-                top: 14px;
-              " [ngClass]="{ 'bottom-active': isMenuOpen() }"></span>
+              <span [ngClass]="{ 'top-active': isMenuOpen() }"></span>
+              <span [ngClass]="{ 'middle-active': isMenuOpen() }"></span>
+              <span [ngClass]="{ 'bottom-active': isMenuOpen() }"></span>
             </div>
           </ion-button>
         </ion-col>

@@ -76,58 +76,81 @@
     font-weight: 600;
   }
 
-  // Mobile toggle button (right side) - Hamburger style
+  // Mobile toggle button (right side) - MOBILE ONLY
   .navbar__mobile-col {
     justify-content: flex-end;
     margin-left: auto;
-    display: flex !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    position: relative !important;
-    z-index: 9999 !important;
+    padding: 4px;
   }
 
   .navbar__mobile-toggle {
-    --background: transparent !important;
-    --color: white !important;
-    background: transparent !important;
-    color: white !important;
-    border: 2px solid white !important;
-    border-radius: 6px !important;
-    margin: 0 !important;
-    padding: 8px !important;
-    min-width: 44px !important;
-    min-height: 44px !important;
-    display: flex !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    position: relative !important;
-    z-index: 9999 !important;
+    --background: transparent;
+    --color: white;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    border-radius: 6px;
+    margin: 0;
+    padding: 8px;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
     align-items: center;
     justify-content: center;
 
     &:hover {
-      --background: rgba(255, 255, 255, 0.1) !important;
-      background: rgba(255, 255, 255, 0.1) !important;
-      border-color: rgba(255, 255, 255, 0.8) !important;
+      --background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.8);
     }
 
-    // Hamburger animation styles
+    // Hamburger icon styles
     .hamburger-icon {
+      width: 20px;
+      height: 16px;
+      position: relative;
+      transform: rotate(0deg);
+      transition: 0.3s ease-in-out;
+      cursor: pointer;
+
       span {
+        display: block;
+        position: absolute;
+        height: 2px;
+        width: 100%;
+        background: white;
+        border-radius: 1px;
+        opacity: 1;
+        left: 0;
+        transform: rotate(0deg);
+        transition: 0.25s ease-in-out;
+
+        &:nth-child(1) {
+          top: 0px;
+        }
+
+        &:nth-child(2) {
+          top: 7px;
+        }
+
+        &:nth-child(3) {
+          top: 14px;
+        }
+
+        // Animation states
         &.top-active {
-          top: 7px !important;
-          transform: rotate(135deg) !important;
+          top: 7px;
+          transform: rotate(135deg);
         }
         
         &.middle-active {
-          opacity: 0 !important;
-          left: -60px !important;
+          opacity: 0;
+          left: -60px;
         }
         
         &.bottom-active {
-          top: 7px !important;
-          transform: rotate(-135deg) !important;
+          top: 7px;
+          transform: rotate(-135deg);
         }
       }
     }
@@ -201,33 +224,24 @@
     }
   }
 
-  // Responsive behavior - Force mobile elements to show
+  // Responsive behavior - Proper mobile/desktop separation
   @media (max-width: 767px) {
     .navbar__nav {
-      display: none !important;
+      display: none;
     }
     
-    .navbar__mobile-toggle,
     .navbar__mobile-col {
-      display: flex !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-    }
-    
-    // Override Ionic's hide classes
-    .ion-hide-md-up {
-      display: flex !important;
+      display: flex;
     }
   }
 
   @media (min-width: 768px) {
-    .navbar__mobile-toggle,
     .navbar__mobile-col {
-      display: none !important;
+      display: none;
     }
     
     .navbar__mobile-dropdown {
-      display: none !important;
+      display: none;
     }
   }
 
