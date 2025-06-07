@@ -1,0 +1,7 @@
+{
+  "name": "SMS_FE",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
