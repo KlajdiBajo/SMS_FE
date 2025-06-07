@@ -1,7 +1,7 @@
 .teachers {
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 2rem auto 0 auto;
 }
 
 .teachers__header {
@@ -9,6 +9,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .teachers__title {
@@ -24,6 +25,13 @@
 
 .teachers__add-btn {
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-left: auto;
+  margin-right: 0;
+  min-width: 160px;
 }
 
 .teachers__search {
@@ -72,8 +80,32 @@
   gap: 0.5rem;
 }
 
+.teachers__card-actions ion-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
 .teachers_no-results {
   text-align: center;
   color: #888;
   padding: 2rem 0;
+}
+
+@media (max-width: 600px) {
+  .teachers {
+    margin-top: 1.5rem;
+  }
+  .teachers__header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .teachers__add-btn {
+    margin: 0 auto;
+    width: 100%;
+    min-width: 0;
+  }
 } 

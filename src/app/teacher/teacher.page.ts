@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { TeacherFormComponent } from '../components/teacher/teacher-form.component';
-import { TeacherDetailsComponent, Teacher } from '../components/teacher/teacher-details.component';
+import { TeacherFormComponent } from '../components/teacher-form/teacher-form.component';
+import { TeacherDetailsComponent, Teacher } from '../components/teacher-details/teacher-details.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-teacher',
   templateUrl: './teacher.page.html',
   styleUrls: ['./teacher.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, TeacherFormComponent, TeacherDetailsComponent],
+  imports: [CommonModule, IonicModule, FormsModule, TeacherFormComponent, TeacherDetailsComponent],
 })
 export class TeacherPage {
   teachers: Teacher[] = [

@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Teacher } from './teacher-details.component';
+import { Teacher } from '../teacher-details/teacher-details.component';
 
 @Component({
   selector: 'app-teacher-form',

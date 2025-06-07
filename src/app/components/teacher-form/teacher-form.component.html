@@ -1,0 +1,112 @@
+<div class="teacher-form-backdrop">
+  <ion-card class="teacher-form-card">
+    <ion-card-header class="teacher-form-header">
+      <ion-card-title>{{ teacher ? 'Edit Teacher' : 'Add New Teacher' }}</ion-card-title>
+      <ion-button fill="clear" size="small" (click)="onClose()" class="teacher-form-close-btn">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-card-header>
+    
+    <ion-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="teacher-form-form">
+        
+        <!-- Name Fields - Side by side on desktop, stacked on mobile -->
+        <ion-grid class="ion-no-padding">
+          <ion-row>
+            <ion-col size="12" size-md="6">
+              <ion-item lines="none">
+                <ion-label position="stacked">First Name *</ion-label>
+                <ion-input 
+                  formControlName="firstName" 
+                  placeholder="Enter first name"
+                  required>
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-item lines="none">
+                <ion-label position="stacked">Last Name *</ion-label>
+                <ion-input 
+                  formControlName="lastName" 
+                  placeholder="Enter last name"
+                  required>
+                </ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <!-- Contact Information -->
+        <ion-item lines="none">
+          <ion-label position="stacked">Email *</ion-label>
+          <ion-input 
+            formControlName="email" 
+            type="email" 
+            placeholder="Enter email address"
+            required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">Phone *</ion-label>
+          <ion-input 
+            formControlName="phone" 
+            placeholder="Enter phone number"
+            required>
+          </ion-input>
+        </ion-item>
+
+        <!-- Work Information -->
+        <ion-item lines="none">
+          <ion-label position="stacked">Department *</ion-label>
+          <ion-input 
+            formControlName="department" 
+            placeholder="Enter department"
+            required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">Subject *</ion-label>
+          <ion-input 
+            formControlName="subject" 
+            placeholder="Enter subject"
+            required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">Hire Date *</ion-label>
+          <ion-input 
+            formControlName="hireDate" 
+            type="date" 
+            required>
+          </ion-input>
+        </ion-item>
+
+        <!-- Form Actions -->
+        <div class="teacher-form-actions">
+          <ion-button 
+            expand="block" 
+            type="submit" 
+            [disabled]="form.invalid"
+            color="primary">
+            <ion-icon name="checkmark" slot="start"></ion-icon>
+            {{ teacher ? 'Update Teacher' : 'Add Teacher' }}
+          </ion-button>
+          
+          <ion-button 
+            expand="block" 
+            fill="outline" 
+            type="button" 
+            (click)="onClose()"
+            color="medium">
+            <ion-icon name="close" slot="start"></ion-icon>
+            Cancel
+          </ion-button>
+        </div>
+        
+      </form>
+    </ion-card-content>
+  </ion-card>
+</div>
