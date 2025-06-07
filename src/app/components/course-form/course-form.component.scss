@@ -1,0 +1,236 @@
+/* course-form.component.scss */
+.course-form-backdrop {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  padding: 4rem 1rem 1rem 1rem;
+  z-index: 10000;
+  width: 100vw !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+.course-form-card {
+  width: 100%;
+  max-width: 400px;
+  height: fit-content;
+  max-height: 75vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  --background: white;
+  position: relative;
+  margin: 0 auto !important;
+  transform: none !important;
+  left: auto !important;
+  right: auto !important;
+}
+
+.course-form-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.75rem 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--ion-color-light-shade);
+  margin-bottom: 0;
+
+  ion-card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--ion-color-dark);
+  }
+}
+
+.course-form-close-btn {
+  margin-left: auto;
+  --color: var(--ion-color-medium);
+  min-width: 40px;
+  min-height: 40px;
+  
+  &:hover {
+    --color: var(--ion-color-danger);
+    --background: rgba(var(--ion-color-danger-rgb), 0.1);
+  }
+}
+
+ion-card-content {
+  padding: 0.75rem;
+}
+
+.course-form-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  ion-grid {
+    padding: 0;
+    margin: 0;
+  }
+
+  ion-row {
+    margin: 0;
+  }
+
+  ion-col {
+    padding: 0 0.25rem;
+  }
+
+  ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --border-width: 0;
+    --background: transparent;
+    margin-bottom: 0;
+    min-height: auto;
+  }
+
+  ion-label {
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--ion-color-dark);
+    margin-bottom: 0.25rem;
+  }
+
+  ion-input, ion-textarea {
+    --padding-start: 10px;
+    --padding-end: 10px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    border: 2px solid var(--ion-color-light-shade);
+    border-radius: 6px;
+    margin-top: 0.25rem;
+    background: white;
+    font-size: 0.85rem;
+    min-height: auto;
+
+    &:focus-within {
+      border-color: var(--ion-color-primary);
+      box-shadow: 0 0 0 2px rgba(var(--ion-color-primary-rgb), 0.1);
+    }
+
+    &.error {
+      border-color: var(--ion-color-danger);
+      
+      &:focus-within {
+        border-color: var(--ion-color-danger);
+        box-shadow: 0 0 0 2px rgba(var(--ion-color-danger-rgb), 0.1);
+      }
+    }
+  }
+
+  ion-textarea {
+    min-height: 50px;
+  }
+
+  ion-select {
+    --padding-start: 10px;
+    --padding-end: 10px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    border: 2px solid var(--ion-color-light-shade);
+    border-radius: 6px;
+    margin-top: 0.25rem;
+    background: white;
+    font-size: 0.85rem;
+    min-height: auto;
+
+    &:focus-within {
+      border-color: var(--ion-color-primary);
+      box-shadow: 0 0 0 2px rgba(var(--ion-color-primary-rgb), 0.1);
+    }
+  }
+}
+
+.error-message {
+  font-size: 0.75rem;
+  color: var(--ion-color-danger);
+  margin-top: 0.25rem;
+}
+
+.course-form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--ion-color-light-shade);
+
+  ion-button {
+    margin: 0;
+    height: 38px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 6px;
+
+    &[color="primary"] {
+      --background: var(--ion-color-primary);
+      --color: white;
+    }
+
+    &[fill="outline"] {
+      --border-width: 2px;
+    }
+  }
+}
+
+// Mobile responsiveness
+@media (max-width: 600px) {
+  .course-form-backdrop {
+    padding: 2rem 0.5rem 1rem 0.5rem !important;
+    align-items: flex-start !important;
+  }
+
+  .course-form-card {
+    max-width: 100%;
+    max-height: 95vh;
+    border-radius: 12px;
+  }
+
+  .course-form-header {
+    padding: 1rem 1rem 0.5rem 1rem;
+
+    ion-card-title {
+      font-size: 1.1rem;
+    }
+  }
+
+  ion-card-content {
+    padding: 0.75rem;
+  }
+
+  .course-form-form {
+    gap: 0.5rem;
+
+    // Stack fields on mobile
+    ion-grid ion-row ion-col {
+      size: 12 !important;
+    }
+  }
+
+  .course-form-actions {
+    gap: 0.5rem;
+    
+    ion-button {
+      height: 44px;
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .course-form-backdrop {
+    padding: 1.5rem 0.25rem 0.5rem 0.25rem !important;
+  }
+  
+  .course-form-card {
+    border-radius: 8px;
+  }
+}

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { TeacherFormComponent } from '../components/teacher-form/teacher-form.component';
-import { TeacherDetailsComponent, Teacher } from '../components/teacher-details/teacher-details.component';
+import { TeacherFormComponent } from '../../components/teacher-form/teacher-form.component';
+import { TeacherDetailsComponent, Teacher } from '../../components/teacher-details/teacher-details.component';
 import { FormsModule } from '@angular/forms';
 
 @Component({

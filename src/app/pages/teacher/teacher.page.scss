@@ -2,6 +2,7 @@
   width: 100%;
   max-width: 1200px;
   margin: 2rem auto 0 auto;
+  padding-top: 1rem;
 }
 
 .teachers__header {
@@ -97,6 +98,8 @@
 @media (max-width: 600px) {
   .teachers {
     margin-top: 1.5rem;
+    /* Increase top padding significantly for mobile */
+    padding-top: 3rem; /* Adjust this value as needed - try 2rem, 3rem, or 4rem */
   }
   .teachers__header {
     flex-direction: column;
@@ -108,4 +111,4 @@
     width: 100%;
     min-width: 0;
   }
-} 
+}

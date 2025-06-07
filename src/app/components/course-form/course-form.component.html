@@ -1,0 +1,146 @@
+<!-- course-form.component.html -->
+<div *ngIf="isOpen" class="course-form-backdrop" (click)="onCancel()">
+  <ion-card class="course-form-card" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="course-form-header">
+      <ion-card-title>{{ course ? 'Edit Course' : 'Add New Course' }}</ion-card-title>
+      <ion-button 
+        fill="clear" 
+        class="course-form-close-btn"
+        (click)="onCancel()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </div>
+
+    <!-- Form Content -->
+    <ion-card-content>
+      <form [formGroup]="courseForm" (ngSubmit)="onSubmit()" class="course-form-form">
+          
+        <!-- Course Name -->
+        <ion-item>
+          <ion-label position="stacked">Course Name *</ion-label>
+          <ion-input
+            formControlName="name"
+            placeholder="Enter course name"
+            [class.error]="hasError('name')">
+          </ion-input>
+          <div *ngIf="hasError('name')" class="error-message">
+            {{ getErrorMessage('name') }}
+          </div>
+        </ion-item>
+
+        <!-- Course Code -->
+        <ion-item>
+          <ion-label position="stacked">Course Code *</ion-label>
+          <ion-input
+            formControlName="code"
+            placeholder="e.g., CS301"
+            [class.error]="hasError('code')">
+          </ion-input>
+          <div *ngIf="hasError('code')" class="error-message">
+            {{ getErrorMessage('code') }}
+          </div>
+        </ion-item>
+
+        <!-- Description -->
+        <ion-item>
+          <ion-label position="stacked">Description</ion-label>
+          <ion-textarea
+            formControlName="description"
+            placeholder="Enter course description"
+            rows="2">
+          </ion-textarea>
+        </ion-item>
+
+        <ion-grid>
+          <ion-row>
+            <!-- Credits -->
+            <ion-col size="6">
+              <ion-item>
+                <ion-label position="stacked">Credits</ion-label>
+                <ion-input
+                  type="number"
+                  formControlName="credits"
+                  placeholder="0"
+                  min="1"
+                  max="10"
+                  [class.error]="hasError('credits')">
+                </ion-input>
+                <div *ngIf="hasError('credits')" class="error-message">
+                  {{ getErrorMessage('credits') }}
+                </div>
+              </ion-item>
+            </ion-col>
+
+            <!-- Capacity -->
+            <ion-col size="6">
+              <ion-item>
+                <ion-label position="stacked">Capacity</ion-label>
+                <ion-input
+                  type="number"
+                  formControlName="capacity"
+                  placeholder="0"
+                  min="1"
+                  [class.error]="hasError('capacity')">
+                </ion-input>
+                <div *ngIf="hasError('capacity')" class="error-message">
+                  {{ getErrorMessage('capacity') }}
+                </div>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <!-- Department -->
+        <ion-item>
+          <ion-label position="stacked">Department *</ion-label>
+          <ion-input
+            formControlName="department"
+            placeholder="e.g., Computer Science"
+            [class.error]="hasError('department')">
+          </ion-input>
+          <div *ngIf="hasError('department')" class="error-message">
+            {{ getErrorMessage('department') }}
+          </div>
+        </ion-item>
+
+        <!-- Duration -->
+        <ion-item>
+          <ion-label position="stacked">Duration</ion-label>
+          <ion-input
+            formControlName="duration"
+            placeholder="e.g., 1 semester, 6 months">
+          </ion-input>
+        </ion-item>
+
+        <!-- Status -->
+        <ion-item>
+          <ion-label position="stacked">Status</ion-label>
+          <ion-select formControlName="status" placeholder="Select status">
+            <ion-select-option value="active">Active</ion-select-option>
+            <ion-select-option value="inactive">Inactive</ion-select-option>
+            <ion-select-option value="archived">Archived</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <!-- Action Buttons -->
+        <div class="course-form-actions">
+          <ion-button 
+            type="submit" 
+            color="primary"
+            expand="block"
+            [disabled]="courseForm.invalid">
+            {{ course ? 'Update Course' : 'Add Course' }}
+          </ion-button>
+          <ion-button 
+            type="button" 
+            fill="outline" 
+            expand="block"
+            (click)="onCancel()">
+            Cancel
+          </ion-button>
+        </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</div>
