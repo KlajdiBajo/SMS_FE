@@ -1,0 +1,263 @@
+// Import global variables
+@import '../../../theme/variables.scss';
+
+:host {
+  // Header and toolbar styles
+  ion-header {
+    --background: #{$navbar-bg};
+    position: relative;
+  }
+
+  ion-toolbar {
+    --background: #{$navbar-bg};
+    --border-color: #{$medium-color};
+    --border-width: 0 0 1px 0;
+  }
+
+  // Logo section
+  .navbar__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .navbar__logo-icon {
+      font-size: 1.5rem;
+    }
+
+    .navbar__logo-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #{$navbar-text};
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  // Desktop navigation (right-aligned)
+  .navbar__nav-col {
+    display: flex;
+    justify-content: flex-end;
+    flex: 1;
+  }
+
+  .navbar__nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .navbar__link {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    color: #{$navbar-text};
+    --color: #{$navbar-text};
+    --background: transparent;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --border-radius: #{$border-radius};
+    font-size: 0.9rem;
+    transition: all #{$transition-speed} ease;
+
+    &:hover {
+      --background: rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar__link-icon {
+      margin-right: 0.25rem;
+    }
+  }
+
+  .navbar__link--active {
+    color: #{$navbar-active};
+    --color: #{$navbar-active};
+    --background: rgba(56, 128, 255, 0.1);
+    font-weight: 600;
+  }
+
+  // Mobile toggle button (right side) - Hamburger style
+  .navbar__mobile-col {
+    justify-content: flex-end;
+    margin-left: auto;
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: relative !important;
+    z-index: 9999 !important;
+  }
+
+  .navbar__mobile-toggle {
+    --background: transparent !important;
+    --color: white !important;
+    background: transparent !important;
+    color: white !important;
+    border: 2px solid white !important;
+    border-radius: 6px !important;
+    margin: 0 !important;
+    padding: 8px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: relative !important;
+    z-index: 9999 !important;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      --background: rgba(255, 255, 255, 0.1) !important;
+      background: rgba(255, 255, 255, 0.1) !important;
+      border-color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    // Hamburger animation styles
+    .hamburger-icon {
+      span {
+        &.top-active {
+          top: 7px !important;
+          transform: rotate(135deg) !important;
+        }
+        
+        &.middle-active {
+          opacity: 0 !important;
+          left: -60px !important;
+        }
+        
+        &.bottom-active {
+          top: 7px !important;
+          transform: rotate(-135deg) !important;
+        }
+      }
+    }
+  }
+
+  // Mobile dropdown menu
+  .navbar__mobile-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    background: #{$navbar-bg};
+    border-top: 1px solid #{$medium-color};
+    box-shadow: #{$box-shadow};
+    z-index: 1000;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height #{$transition-speed} ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+
+    &--open {
+      max-height: 300px;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .navbar__mobile-dropdown-list {
+      background: #{$navbar-bg};
+      padding: 0;
+      margin: 0;
+    }
+  }
+
+  .navbar__mobile-link {
+    --background: #{$navbar-bg};
+    --color: #{$navbar-text};
+    color: #{$navbar-text};
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+    --min-height: 48px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    &:hover {
+      --background: rgba(255, 255, 255, 0.05);
+    }
+
+    .navbar__mobile-link-icon {
+      color: #{$navbar-text};
+      margin-right: 1rem;
+    }
+
+    ion-label {
+      color: #{$navbar-text};
+      font-weight: 500;
+    }
+  }
+
+  .navbar__mobile-link--active {
+    color: #{$navbar-active};
+    --color: #{$navbar-active};
+    --background: rgba(56, 128, 255, 0.1);
+
+    .navbar__mobile-link-icon,
+    ion-label {
+      color: #{$navbar-active};
+    }
+  }
+
+  // Responsive behavior - Force mobile elements to show
+  @media (max-width: 767px) {
+    .navbar__nav {
+      display: none !important;
+    }
+    
+    .navbar__mobile-toggle,
+    .navbar__mobile-col {
+      display: flex !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+    
+    // Override Ionic's hide classes
+    .ion-hide-md-up {
+      display: flex !important;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .navbar__mobile-toggle,
+    .navbar__mobile-col {
+      display: none !important;
+    }
+    
+    .navbar__mobile-dropdown {
+      display: none !important;
+    }
+  }
+
+  // General icon styles
+  ion-icon {
+    vertical-align: middle;
+  }
+
+  // Grid and layout
+  ion-col {
+    display: flex;
+    align-items: center;
+    
+    &:last-child {
+      justify-content: flex-end;
+    }
+  }
+
+  .navbar__content {
+    width: 100%;
+  }
+
+  // Force the second column to take remaining space and align right
+  ion-row {
+    width: 100%;
+    
+    ion-col:nth-child(2) {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}

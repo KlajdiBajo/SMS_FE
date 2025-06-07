@@ -1,0 +1,148 @@
+<ion-header class="navbar">
+  <ion-toolbar class="navbar__container" color="dark">
+    <ion-grid>
+      <ion-row class="navbar__content ion-align-items-center">
+        <ion-col size="auto">
+          <div class="navbar__logo">
+            <ion-icon
+              name="school"
+              color="primary"
+              class="navbar__logo-icon"
+            ></ion-icon>
+            <span class="navbar__logo-text">EduManage</span>
+          </div>
+        </ion-col>
+        
+        <!-- Desktop Navigation -->
+        <ion-col class="ion-hide-md-down navbar__nav-col">
+          <ion-buttons class="navbar__nav">
+            @for (item of navigation; track item.name) {
+            <ion-button
+              [routerLink]="item.href"
+              fill="clear"
+              class="navbar__link"
+              [ngClass]="{ 'navbar__link--active': isActive(item.href) }"
+            >
+              <ion-icon
+                [name]="item.icon"
+                slot="start"
+                class="navbar__link-icon"
+              ></ion-icon>
+              {{ item.name }}
+            </ion-button>
+            }
+          </ion-buttons>
+        </ion-col>
+
+        <!-- Mobile Toggle Button - HAMBURGER STYLE -->
+        <ion-col 
+          size="auto" 
+          class="navbar__mobile-col"
+          style="
+            display: flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            z-index: 9999 !important;
+            padding: 4px !important;
+          "
+        >
+          <ion-button
+            fill="clear"
+            class="navbar__mobile-toggle"
+            (click)="toggleMenu()"
+            style="
+              --background: transparent !important; 
+              --color: white !important;
+              color: white !important;
+              background: transparent !important;
+              border: 2px solid white !important;
+              border-radius: 6px !important;
+              min-width: 44px !important;
+              min-height: 44px !important;
+              display: flex !important;
+              opacity: 1 !important;
+              visibility: visible !important;
+              z-index: 9999 !important;
+              padding: 8px !important;
+            "
+          >
+            <div 
+              class="hamburger-icon"
+              [class.active]="isMenuOpen()"
+              style="
+                width: 20px;
+                height: 16px;
+                position: relative;
+                transform: rotate(0deg);
+                transition: 0.3s ease-in-out;
+                cursor: pointer;
+              "
+            >
+              <span style="
+                display: block;
+                position: absolute;
+                height: 2px;
+                width: 100%;
+                background: white;
+                border-radius: 1px;
+                opacity: 1;
+                left: 0;
+                transform: rotate(0deg);
+                transition: 0.25s ease-in-out;
+                top: 0px;
+              " [ngClass]="{ 'top-active': isMenuOpen() }"></span>
+              <span style="
+                display: block;
+                position: absolute;
+                height: 2px;
+                width: 100%;
+                background: white;
+                border-radius: 1px;
+                opacity: 1;
+                left: 0;
+                transform: rotate(0deg);
+                transition: 0.25s ease-in-out;
+                top: 7px;
+              " [ngClass]="{ 'middle-active': isMenuOpen() }"></span>
+              <span style="
+                display: block;
+                position: absolute;
+                height: 2px;
+                width: 100%;
+                background: white;
+                border-radius: 1px;
+                opacity: 1;
+                left: 0;
+                transform: rotate(0deg);
+                transition: 0.25s ease-in-out;
+                top: 14px;
+              " [ngClass]="{ 'bottom-active': isMenuOpen() }"></span>
+            </div>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+
+  <!-- Mobile Dropdown Menu -->
+  <div class="navbar__mobile-dropdown ion-hide-md-up" [class.navbar__mobile-dropdown--open]="isMenuOpen()">
+    <ion-list class="navbar__mobile-dropdown-list">
+      @for (item of navigation; track item.name) {
+      <ion-item
+        [routerLink]="item.href"
+        (click)="closeMenu($event)"
+        class="navbar__mobile-link"
+        [ngClass]="{ 'navbar__mobile-link--active': isActive(item.href) }"
+        button
+      >
+        <ion-icon
+          [name]="item.icon"
+          slot="start"
+          class="navbar__mobile-link-icon"
+        ></ion-icon>
+        <ion-label>{{ item.name }}</ion-label>
+      </ion-item>
+      }
+    </ion-list>
+  </div>
+</ion-header>

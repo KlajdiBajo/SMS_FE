@@ -1,2 +1,237 @@
-// For information on how to create your own theme, please see:
+// Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
+
+/** Ionic CSS Variables **/
+:root {
+    /** primary **/
+    --ion-color-primary: #3880ff;
+    --ion-color-primary-rgb: 56, 128, 255;
+    --ion-color-primary-contrast: #ffffff;
+    --ion-color-primary-contrast-rgb: 255, 255, 255;
+    --ion-color-primary-shade: #3171e0;
+    --ion-color-primary-tint: #4c8dff;
+  
+    /** secondary **/
+    --ion-color-secondary: #3dc2ff;
+    --ion-color-secondary-rgb: 61, 194, 255;
+    --ion-color-secondary-contrast: #ffffff;
+    --ion-color-secondary-contrast-rgb: 255, 255, 255;
+    --ion-color-secondary-shade: #36abe0;
+    --ion-color-secondary-tint: #50c8ff;
+  
+    /** tertiary **/
+    --ion-color-tertiary: #5260ff;
+    --ion-color-tertiary-rgb: 82, 96, 255;
+    --ion-color-tertiary-contrast: #ffffff;
+    --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+    --ion-color-tertiary-shade: #4854e0;
+    --ion-color-tertiary-tint: #6370ff;
+  
+    /** success **/
+    --ion-color-success: #2dd36f;
+    --ion-color-success-rgb: 45, 211, 111;
+    --ion-color-success-contrast: #ffffff;
+    --ion-color-success-contrast-rgb: 255, 255, 255;
+    --ion-color-success-shade: #28ba62;
+    --ion-color-success-tint: #42d77d;
+  
+    /** warning **/
+    --ion-color-warning: #ffc409;
+    --ion-color-warning-rgb: 255, 196, 9;
+    --ion-color-warning-contrast: #000000;
+    --ion-color-warning-contrast-rgb: 0, 0, 0;
+    --ion-color-warning-shade: #e0ac08;
+    --ion-color-warning-tint: #ffca22;
+  
+    /** danger **/
+    --ion-color-danger: #eb445a;
+    --ion-color-danger-rgb: 235, 68, 90;
+    --ion-color-danger-contrast: #ffffff;
+    --ion-color-danger-contrast-rgb: 255, 255, 255;
+    --ion-color-danger-shade: #cf3c4f;
+    --ion-color-danger-tint: #ed576b;
+  
+    /** dark **/
+    --ion-color-dark: #222428;
+    --ion-color-dark-rgb: 34, 36, 40;
+    --ion-color-dark-contrast: #ffffff;
+    --ion-color-dark-contrast-rgb: 255, 255, 255;
+    --ion-color-dark-shade: #1e2023;
+    --ion-color-dark-tint: #383a3e;
+  
+    /** medium **/
+    --ion-color-medium: #92949c;
+    --ion-color-medium-rgb: 146, 148, 156;
+    --ion-color-medium-contrast: #ffffff;
+    --ion-color-medium-contrast-rgb: 255, 255, 255;
+    --ion-color-medium-shade: #808289;
+    --ion-color-medium-tint: #9d9fa6;
+  
+    /** light **/
+    --ion-color-light: #f4f5f8;
+    --ion-color-light-rgb: 244, 245, 248;
+    --ion-color-light-contrast: #000000;
+    --ion-color-light-contrast-rgb: 0, 0, 0;
+    --ion-color-light-shade: #d7d8da;
+    --ion-color-light-tint: #f5f6f9;
+  }
+  
+  // ========================================
+  // CUSTOM SCSS VARIABLES FOR EDUMANAGE APP
+  // ========================================
+  
+  // Basic Colors
+  $white-color: #ffffff;
+  $pure-black: #000000;
+  $dark-color: #222428;
+  $light-color: #f4f5f8;
+  $primary-color: #3880ff;
+  $medium-color: #92949c;
+  
+  // Extended Color Palette
+  $gray-100: #f8f9fa;
+  $gray-200: #e9ecef;
+  $gray-300: #dee2e6;
+  $gray-400: #ced4da;
+  $gray-500: #adb5bd;
+  $gray-600: #6c757d;
+  $gray-700: #495057;
+  $gray-800: #343a40;
+  $gray-900: #212529;
+  
+  // Semantic Colors
+  $success-color: #2dd36f;
+  $warning-color: #ffc409;
+  $danger-color: #eb445a;
+  $info-color: #3dc2ff;
+  
+  // Navbar Specific Variables
+  $navbar-bg: $dark-color;
+  $navbar-text: $light-color;
+  $navbar-toggle: $white-color;
+  $navbar-active: $primary-color;
+  $navbar-hover: rgba(255, 255, 255, 0.1);
+  
+  // Layout Variables
+  $border-radius: 4px;
+  $border-radius-sm: 2px;
+  $border-radius-lg: 8px;
+  $border-radius-xl: 12px;
+  
+  // Spacing Variables (following Bootstrap/Tailwind pattern)
+  $spacing-0: 0;
+  $spacing-1: 0.25rem;   // 4px
+  $spacing-2: 0.5rem;    // 8px
+  $spacing-3: 0.75rem;   // 12px
+  $spacing-4: 1rem;      // 16px
+  $spacing-5: 1.25rem;   // 20px
+  $spacing-6: 1.5rem;    // 24px
+  $spacing-8: 2rem;      // 32px
+  $spacing-10: 2.5rem;   // 40px
+  $spacing-12: 3rem;     // 48px
+  $spacing-16: 4rem;     // 64px
+  
+  // Shadow Variables
+  $box-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  $box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  $box-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  $box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  $box-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  // Animation Variables
+  $transition-speed: 0.3s;
+  $transition-fast: 0.15s;
+  $transition-slow: 0.5s;
+  $transition-ease: ease;
+  $transition-ease-in: ease-in;
+  $transition-ease-out: ease-out;
+  $transition-ease-in-out: ease-in-out;
+  
+  // Font Variables
+  $font-size-xs: 0.75rem;   // 12px
+  $font-size-sm: 0.875rem;  // 14px
+  $font-size-base: 1rem;    // 16px
+  $font-size-lg: 1.125rem;  // 18px
+  $font-size-xl: 1.25rem;   // 20px
+  $font-size-2xl: 1.5rem;   // 24px
+  $font-size-3xl: 1.875rem; // 30px
+  $font-size-4xl: 2.25rem;  // 36px
+  
+  $font-weight-light: 300;
+  $font-weight-normal: 400;
+  $font-weight-medium: 500;
+  $font-weight-semibold: 600;
+  $font-weight-bold: 700;
+  $font-weight-extrabold: 800;
+  
+  // Z-index Variables
+  $z-index-dropdown: 1000;
+  $z-index-sticky: 1020;
+  $z-index-fixed: 1030;
+  $z-index-modal-backdrop: 1040;
+  $z-index-modal: 1050;
+  $z-index-popover: 1060;
+  $z-index-tooltip: 1070;
+  
+  // Breakpoint Variables (matching Ionic's breakpoints)
+  $breakpoint-xs: 0;
+  $breakpoint-sm: 576px;
+  $breakpoint-md: 768px;
+  $breakpoint-lg: 992px;
+  $breakpoint-xl: 1200px;
+  
+  // Component Specific Variables
+  // Card Variables
+  $card-bg: $white-color;
+  $card-border: 1px solid $gray-200;
+  $card-border-radius: $border-radius-lg;
+  $card-padding: $spacing-6;
+  
+  // Button Variables
+  $button-border-radius: $border-radius;
+  $button-padding-x: $spacing-4;
+  $button-padding-y: $spacing-2;
+  $button-font-weight: $font-weight-medium;
+  
+  // Form Variables
+  $input-border: 1px solid $gray-300;
+  $input-border-radius: $border-radius;
+  $input-padding-x: $spacing-3;
+  $input-padding-y: $spacing-2;
+  $input-focus-border: $primary-color;
+  
+  // Table Variables
+  $table-border: 1px solid $gray-200;
+  $table-header-bg: $gray-100;
+  $table-row-hover: $gray-500;
+  
+  // Utility Classes (can be used with @extend)
+  %flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  %flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  %text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  %sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
