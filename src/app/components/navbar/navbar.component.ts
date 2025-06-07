@@ -20,7 +20,7 @@ export class NavbarComponent {
     isMenuOpen = signal(false);
 
     navigation: NavigationItem[] = [
-        { name: 'Teachers', href: '/teachers', icon: 'people' },
+        { name: 'Teachers', href: '/teacher', icon: 'people' },
         { name: 'Students', href: '/students', icon: 'school' },
         { name: 'Courses', href: '/courses', icon: 'book' }
     ];
