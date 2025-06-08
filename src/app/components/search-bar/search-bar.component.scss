@@ -1,0 +1,15 @@
+.search-bar {
+  margin-bottom: 1.5rem;
+
+  &__input {
+    --background: transparent;
+    --box-shadow: none;
+    padding: 0;
+  }
+
+  ion-searchbar {
+    --background: transparent;
+    --box-shadow: none;
+    padding: 0;
+  }
+}

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Course, CourseFormData, Teacher } from '../../../types/course';
 import { CourseFormComponent } from '../../components/course-form/course-form.component';
 import { CourseDetailsComponent } from '../../components/course-details/course-details.component';
+import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
 import { addIcons } from 'ionicons';
 import { add, create, eye, trash, search, close } from 'ionicons/icons';
 
@@ -13,7 +14,7 @@ import { add, create, eye, trash, search, close } from 'ionicons/icons';
   templateUrl: './courses.page.html',
   styleUrls: ['./courses.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, FormsModule, CourseFormComponent, CourseDetailsComponent],
+  imports: [CommonModule, IonicModule, FormsModule, CourseFormComponent, CourseDetailsComponent, SearchBarComponent],
 })
 export class CoursesPage implements OnInit {
   constructor() {

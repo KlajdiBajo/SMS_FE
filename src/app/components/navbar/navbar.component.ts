@@ -35,6 +35,6 @@ export class NavbarComponent {
 
     isActive(href: string): boolean {
         const currentPath = window.location.pathname;
-        return currentPath === href || (href === '/teachers' && currentPath === '/');
+        return currentPath === href || (href === '/teacher' && currentPath === '/');
     }
 }

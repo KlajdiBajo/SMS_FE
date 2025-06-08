@@ -2,17 +2,13 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { close, create, trash, add } from 'ionicons/icons';
+import { close, create, trash } from 'ionicons/icons';
 
 export interface Teacher {
   id: string;
   firstName: string;
   lastName: string;
-  email: string;
-  phone: string;
-  department: string;
-  subject: string;
-  hireDate: string;
+  title: string;
 }
 
 @Component({
@@ -27,10 +23,9 @@ export class TeacherDetailsComponent {
   @Output() close = new EventEmitter<void>();
   @Output() edit = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
-  @Output() view = new EventEmitter<void>();
 
   constructor() {
-    addIcons({ close, create, trash, add });
+    addIcons({ close, create, trash });
   }
 
   get initials(): string {
@@ -47,9 +42,5 @@ export class TeacherDetailsComponent {
 
   onDelete() {
     this.delete.emit();
-  }
-
-  onView() {
-    this.view.emit();
   }
 } 

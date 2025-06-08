@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonSearchbar, IonCard, IonCardHeader, IonCardContent, IonBadge, IonGrid, IonRow, IonCol } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonCard, IonCardHeader, IonCardContent, IonBadge, IonGrid, IonRow, IonCol } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { search, people, add, create, trash, eye } from 'ionicons/icons';
 import { ToastController } from '@ionic/angular';
 import { StudentFormComponent, StudentFormData } from '../../components/student-form/student-form.component';
 import { StudentDetailsComponent, Student, Course } from '../../components/student-details/student-details.component';
+import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-student',
@@ -15,9 +16,9 @@ import { StudentDetailsComponent, Student, Course } from '../../components/stude
   standalone: true,
   imports: [
     IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon,
-    IonSearchbar, IonCard, IonCardHeader, IonCardContent,
+    IonCard, IonCardHeader, IonCardContent,
     IonBadge, IonGrid, IonRow, IonCol, CommonModule, FormsModule,
-    StudentFormComponent, StudentDetailsComponent
+    StudentFormComponent, StudentDetailsComponent, SearchBarComponent
   ]
 })
 export class StudentPage implements OnInit {

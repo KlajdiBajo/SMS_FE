@@ -16,23 +16,11 @@
       </ion-button>
     </div>
 
-    <!-- Search -->
-    <ion-card class="courses__search">
-      <ion-card-content>
-        <ion-item lines="none">
-          <ion-icon
-            name="search"
-            slot="start"
-            class="courses__search-icon"
-          ></ion-icon>
-          <ion-input
-            placeholder="Search courses by name, code, or department..."
-            [(ngModel)]="searchTerm"
-            (ionInput)="onSearchChange()"
-          ></ion-input>
-        </ion-item>
-      </ion-card-content>
-    </ion-card>
+    <app-search-bar
+      [(value)]="searchTerm"
+      placeholder="Search courses by name, code, or department..."
+      (valueChange)="onSearchChange()"
+    ></app-search-bar>
 
     <!-- Courses Grid -->
     <div class="courses__grid">

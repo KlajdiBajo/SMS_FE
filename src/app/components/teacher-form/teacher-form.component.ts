@@ -24,11 +24,7 @@ export class TeacherFormComponent implements OnInit {
     this.form = this.fb.group({
       firstName: [this.teacher?.firstName || '', Validators.required],
       lastName: [this.teacher?.lastName || '', Validators.required],
-      email: [this.teacher?.email || '', [Validators.required, Validators.email]],
-      phone: [this.teacher?.phone || '', Validators.required],
-      department: [this.teacher?.department || '', Validators.required],
-      subject: [this.teacher?.subject || '', Validators.required],
-      hireDate: [this.teacher?.hireDate || '', Validators.required],
+      title: [this.teacher?.title || '', Validators.required],
     });
   }
 

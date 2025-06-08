@@ -1,72 +1,79 @@
-import { Component } from '@angular/core';
-import { IonicModule, ModalController, ToastController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { TeacherFormComponent } from '../../components/teacher-form/teacher-form.component';
 import { TeacherDetailsComponent, Teacher } from '../../components/teacher-details/teacher-details.component';
 import { FormsModule } from '@angular/forms';
 import { addIcons } from 'ionicons';
 import { add, create, eye, trash, close } from 'ionicons/icons';
+import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
+import { TeacherService } from '../../services/teacher.service';
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-teacher',
   templateUrl: './teacher.page.html',
   styleUrls: ['./teacher.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, FormsModule, TeacherFormComponent, TeacherDetailsComponent],
+  imports: [CommonModule, IonicModule, FormsModule, TeacherFormComponent, TeacherDetailsComponent, SearchBarComponent],
 })
-export class TeacherPage {
-  teachers: Teacher[] = [
-    {
-      id: '1',
-      firstName: 'John',
-      lastName: 'Smith',
-      email: 'john.smith@school.edu',
-      phone: '+1 234-567-8901',
-      department: 'Mathematics',
-      subject: 'Algebra',
-      hireDate: '2020-08-15'
-    },
-    {
-      id: '2',
-      firstName: 'Sarah',
-      lastName: 'Johnson',
-      email: 'sarah.johnson@school.edu',
-      phone: '+1 234-567-8902',
-      department: 'Science',
-      subject: 'Biology',
-      hireDate: '2019-09-01'
-    },
-    {
-      id: '3',
-      firstName: 'Michael',
-      lastName: 'Brown',
-      email: 'michael.brown@school.edu',
-      phone: '+1 234-567-8903',
-      department: 'English',
-      subject: 'Literature',
-      hireDate: '2021-01-10'
-    }
-  ];
-
+export class TeacherPage implements OnInit {
+  teachers: Teacher[] = [];
   searchTerm = '';
   isFormOpen = false;
   isDetailsOpen = false;
   editingTeacher: Teacher | null = null;
   selectedTeacher: Teacher | null = null;
+  private searchSubject = new Subject<string>();
+  currentPage = 0;
+  pageSize = 1;
+  isFirst = true;
+  isLast = false;
+  totalPages = 1;
+  totalElements = 0;
 
-  constructor(private toastController: ToastController) {
+  constructor(
+    private teacherService: TeacherService,
+    private toastController: ToastController
+  ) {
     addIcons({ add, create, eye, trash, close });
   }
 
-  get filteredTeachers(): Teacher[] {
-    const term = this.searchTerm.toLowerCase();
-    return this.teachers.filter(teacher =>
-      teacher.firstName.toLowerCase().includes(term) ||
-      teacher.lastName.toLowerCase().includes(term) ||
-      teacher.email.toLowerCase().includes(term) ||
-      teacher.department.toLowerCase().includes(term) ||
-      teacher.subject.toLowerCase().includes(term)
-    );
+  ngOnInit() {
+    this.loadTeachers();
+    this.setupSearch();
+  }
+
+  private setupSearch() {
+    this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(term => {
+      this.currentPage = 0;
+      this.loadTeachers();
+    });
+  }
+
+  onSearchChange(term: string) {
+    this.searchTerm = term;
+    this.searchSubject.next(term);
+  }
+
+  loadTeachers() {
+    this.teacherService.filterTeachers(this.searchTerm, this.currentPage, this.pageSize)
+      .subscribe({
+        next: (response) => {
+          this.teachers = response.slice.content;
+          this.isFirst = response.slice.first;
+          this.isLast = response.slice.last;
+          this.totalPages = response.slice.pageable && response.slice.pageable.pageSize ? Math.ceil(response.slice.numberOfElements / response.slice.pageable.pageSize) : 1;
+          this.totalElements = response.slice.numberOfElements;
+        },
+        error: (error) => {
+          console.error('Error loading teachers:', error);
+          this.presentToast('Error loading teachers');
+        }
+      });
   }
 
   openAddForm() {
@@ -80,8 +87,16 @@ export class TeacherPage {
   }
 
   openViewDetails(teacher: Teacher) {
-    this.selectedTeacher = teacher;
-    this.isDetailsOpen = true;
+    this.teacherService.getTeacher(Number(teacher.id)).subscribe({
+      next: (response) => {
+        this.selectedTeacher = response.data;
+        this.isDetailsOpen = true;
+      },
+      error: (error) => {
+        console.error('Error loading teacher details:', error);
+        this.presentToast('Error loading teacher details');
+      }
+    });
   }
 
   closeForm() {
@@ -95,48 +110,75 @@ export class TeacherPage {
   }
 
   handleAddTeacher(teacherData: Omit<Teacher, 'id'>) {
-    const newTeacher: Teacher = {
-      ...teacherData,
-      id: Date.now().toString()
-    };
-    this.teachers = [...this.teachers, newTeacher];
-    this.isFormOpen = false;
-    this.presentToast('Teacher added successfully');
+    this.teacherService.upsertTeacher(teacherData).subscribe({
+      next: (response) => {
+        this.loadTeachers();
+        this.isFormOpen = false;
+        this.presentToast('Teacher added successfully');
+      },
+      error: (error) => {
+        console.error('Error adding teacher:', error);
+        this.presentToast('Error adding teacher');
+      }
+    });
   }
 
   handleEditTeacher(teacherData: Omit<Teacher, 'id'>) {
     if (this.editingTeacher) {
-      this.teachers = this.teachers.map(teacher =>
-        teacher.id === this.editingTeacher!.id
-          ? { ...teacherData, id: this.editingTeacher!.id }
-          : teacher
-      );
-      this.editingTeacher = null;
-      this.isFormOpen = false;
-      this.presentToast('Teacher updated successfully');
+      const updateData = {
+        ...teacherData,
+        id: this.editingTeacher.id
+      };
+
+      this.teacherService.upsertTeacher(updateData).subscribe({
+        next: (response) => {
+          this.loadTeachers();
+          this.editingTeacher = null;
+          this.isFormOpen = false;
+          this.presentToast('Teacher updated successfully');
+        },
+        error: (error) => {
+          console.error('Error updating teacher:', error);
+          this.presentToast('Error updating teacher');
+        }
+      });
     }
   }
 
-  async handleDeleteTeacher(id: string) {
-    const alert = await this.toastController.create({
-      header: 'Confirm Delete',
-      message: 'Are you sure you want to delete this teacher?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        },
-        {
-          text: 'Delete',
-          handler: () => {
-            this.teachers = this.teachers.filter(teacher => teacher.id !== id);
-            this.isDetailsOpen = false;
-            this.presentToast('Teacher deleted successfully');
-          }
-        }
-      ]
+  handleDeleteTeacher(teacherId: string) {
+    this.teacherService.deleteTeacher(Number(teacherId)).subscribe({
+      next: () => {
+        this.loadTeachers();
+        this.isDetailsOpen = false;
+        this.selectedTeacher = null;
+        this.presentToast('Teacher deleted successfully');
+      },
+      error: (error) => {
+        console.error('Error deleting teacher:', error);
+        this.presentToast('Error deleting teacher');
+      }
     });
-    await alert.present();
+  }
+
+  goToFirstPage() {
+    if (!this.isFirst) {
+      this.currentPage = 0;
+      this.loadTeachers();
+    }
+  }
+
+  goToPreviousPage() {
+    if (!this.isFirst && this.currentPage > 0) {
+      this.currentPage--;
+      this.loadTeachers();
+    }
+  }
+
+  goToNextPage() {
+    if (!this.isLast) {
+      this.currentPage++;
+      this.loadTeachers();
+    }
   }
 
   private async presentToast(message: string) {

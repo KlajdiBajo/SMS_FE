@@ -1,0 +1,10 @@
+<ion-card class="search-bar">
+  <ion-card-content>
+    <ion-searchbar
+      [placeholder]="placeholder"
+      [(ngModel)]="value"
+      (ionInput)="onSearchChange($event)"
+      class="search-bar__input"
+    ></ion-searchbar>
+  </ion-card-content>
+</ion-card>
