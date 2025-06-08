@@ -185,22 +185,31 @@ ion-card-content {
 // Mobile responsiveness
 @media (max-width: 600px) {
   .course-form-backdrop {
-    padding: 2rem 0.5rem 1rem 0.5rem !important;
-    align-items: center !important; // Changed from flex-start to center
+    padding: 2rem;
+    // Adjust alignment to position the modal slightly higher
+    align-items: flex-start;
+    padding-top: 8rem; // Add top padding to push modal down from very top
   }
 
   .course-form-card {
     max-width: 100%;
-    max-height: 85vh; // Reduced from 95vh for better centering
+    max-height: 85vh; // Slightly increase max height for mobile
+    margin-top: 0; // Remove any top margin
     border-radius: 12px;
   }
 
   .course-form-header {
-    padding: 1rem 1rem 0.5rem 1rem;
+    // Reduce padding slightly on mobile for better spacing
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
 
     ion-card-title {
-      font-size: 1.1rem;
+      font-size: 1.1rem; // Slightly smaller font on mobile
     }
+  }
+
+  .course-form-close-btn {
+    top: 1rem;
+    right: 1rem;
   }
 
   ion-card-content {
@@ -209,6 +218,7 @@ ion-card-content {
 
   .course-form-form {
     gap: 0.5rem;
+    padding: 1.25rem;
 
     // Stack fields on mobile
     ion-grid ion-row ion-col {
@@ -225,24 +235,14 @@ ion-card-content {
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 360px) {
   .course-form-backdrop {
-    padding: 1.5rem 0.25rem 0.5rem 0.25rem !important;
-    align-items: center !important; // Also center for smaller screens
+    padding: 0.5rem 0.25rem !important;
+    align-items: center !important;
   }
   
   .course-form-card {
     border-radius: 8px;
-    max-height: 90vh; // Adjust for smaller screens
+    max-height: 85vh;
   }
 }
-
-@media (max-width: 400px) {
-  .course-form-backdrop {
-    padding: 1.5rem 0.25rem 0.5rem 0.25rem !important;
-  }
-  
-  .course-form-card {
-    border-radius: 8px;
-  }
-} 
