@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { TeacherFormComponent } from '../../components/teacher-form/teacher-form.component';
 import { TeacherDetailsComponent, Teacher } from '../../components/teacher-details/teacher-details.component';
 import { FormsModule } from '@angular/forms';
+import { addIcons } from 'ionicons';
+import { add, create, eye, trash } from 'ionicons/icons';
 
 @Component({
   selector: 'app-teacher',
@@ -52,7 +54,9 @@ export class TeacherPage {
   editingTeacher: Teacher | null = null;
   selectedTeacher: Teacher | null = null;
 
-  constructor(private toastController: ToastController) { }
+  constructor(private toastController: ToastController) {
+    addIcons({ add, create, eye, trash });
+  }
 
   get filteredTeachers(): Teacher[] {
     const term = this.searchTerm.toLowerCase();

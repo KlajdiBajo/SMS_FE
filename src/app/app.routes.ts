@@ -15,11 +15,6 @@ export const routes: Routes = [
   },
 
   {
-    path: 'teachers',
-    redirectTo: 'teacher',
-    pathMatch: 'full',
-  },
-  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',
