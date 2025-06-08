@@ -6,7 +6,7 @@ import { Course, CourseFormData, Teacher } from '../../../types/course';
 import { CourseFormComponent } from '../../components/course-form/course-form.component';
 import { CourseDetailsComponent } from '../../components/course-details/course-details.component';
 import { addIcons } from 'ionicons';
-import { add, create, eye, trash, search } from 'ionicons/icons';
+import { add, create, eye, trash, search, close } from 'ionicons/icons';
 
 @Component({
   selector: 'app-courses',
@@ -17,7 +17,7 @@ import { add, create, eye, trash, search } from 'ionicons/icons';
 })
 export class CoursesPage implements OnInit {
   constructor() {
-    addIcons({ add, create, eye, trash, search });
+    addIcons({ add, create, eye, trash, search, close });
   }
 
   searchTerm: string = '';

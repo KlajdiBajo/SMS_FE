@@ -5,7 +5,7 @@ import { TeacherFormComponent } from '../../components/teacher-form/teacher-form
 import { TeacherDetailsComponent, Teacher } from '../../components/teacher-details/teacher-details.component';
 import { FormsModule } from '@angular/forms';
 import { addIcons } from 'ionicons';
-import { add, create, eye, trash } from 'ionicons/icons';
+import { add, create, eye, trash, close } from 'ionicons/icons';
 
 @Component({
   selector: 'app-teacher',
@@ -55,7 +55,7 @@ export class TeacherPage {
   selectedTeacher: Teacher | null = null;
 
   constructor(private toastController: ToastController) {
-    addIcons({ add, create, eye, trash });
+    addIcons({ add, create, eye, trash, close });
   }
 
   get filteredTeachers(): Teacher[] {
