@@ -1,0 +1,122 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Students</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="students">
+    <div class="students__header">
+      <div>
+        <h1 class="students__title">Students</h1>
+        <p class="students__subtitle">Manage your school's students</p>
+      </div>
+      <ion-button (click)="handleAddStudent()" class="students__add-btn">
+        <ion-icon name="add" slot="start"></ion-icon>
+        Add Student
+      </ion-button>
+    </div>
+
+    <ion-card class="students__search">
+      <ion-card-content>
+        <ion-searchbar
+          placeholder="Search students by name, email, or ID..."
+          [(ngModel)]="searchTerm"
+          class="form__input"
+        ></ion-searchbar>
+      </ion-card-content>
+    </ion-card>
+
+    <div *ngIf="filteredStudents.length === 0" class="students__no-results">
+      <ion-icon
+        name="people"
+        class="h-12 w-12 text-gray-400 mx-auto mb-4"
+      ></ion-icon>
+      <p>No students found matching your search.</p>
+    </div>
+
+    <ion-grid *ngIf="filteredStudents.length > 0" class="students__grid">
+      <ion-row>
+        <ion-col
+          size="12"
+          size-md="6"
+          size-lg="4"
+          *ngFor="let student of filteredStudents"
+        >
+          <ion-card class="students__card">
+            <ion-card-header class="card__header">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="students__card-name">{{ student.name }}</h3>
+                  <p class="students__card-department">{{ student.email }}</p>
+                </div>
+                <ion-badge
+                  [color]="student.status === 'active' ? 'success' : 'danger'"
+                >
+                  {{ student.status | titlecase }}
+                </ion-badge>
+              </div>
+            </ion-card-header>
+            <ion-card-content class="card__content">
+              <div class="students__card-details">
+                <p><strong>Phone:</strong> {{ student.phoneNumber }}</p>
+                <p><strong>Enrollment:</strong> {{ student.enrollmentDate }}</p>
+                <p>
+                  <strong>Courses:</strong> {{ student.courses.length }}
+                  enrolled
+                </p>
+              </div>
+              <div class="students__card-actions">
+                <ion-button
+                  size="small"
+                  fill="outline"
+                  (click)="handleViewStudent(student)"
+                >
+                  <ion-icon name="eye" slot="start"></ion-icon>
+                  View
+                </ion-button>
+                <ion-button
+                  size="small"
+                  fill="outline"
+                  (click)="handleEditStudent(student)"
+                >
+                  <ion-icon name="create" slot="start"></ion-icon>
+                  Edit
+                </ion-button>
+                <ion-button
+                  size="small"
+                  fill="outline"
+                  color="danger"
+                  (click)="handleDeleteStudent(student.id)"
+                >
+                  <ion-icon name="trash"></ion-icon>
+                </ion-button>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- Student Form Modal -->
+    <app-student-form
+      *ngIf="isFormOpen"
+      [student]="editingStudent"
+      [isOpen]="isFormOpen"
+      (submitForm)="handleFormSubmit($event)"
+      (cancel)="handleFormCancel()"
+    ></app-student-form>
+
+    <!-- Student Details Modal -->
+    <app-student-details
+      *ngIf="isDetailsOpen && selectedStudent"
+      [student]="selectedStudent"
+      [isOpen]="isDetailsOpen"
+      (close)="handleDetailsClose()"
+      (edit)="handleEditStudent($event)"
+      (delete)="handleDeleteStudent($event)"
+      (associateCourse)="handleAssociateCourse($event.studentId, $event.courseId)"
+      (removeCourse)="handleRemoveCourse($event.studentId, $event.courseId)"
+    ></app-student-details>
+  </div>
+</ion-content>

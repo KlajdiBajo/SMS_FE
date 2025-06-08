@@ -1,14 +1,14 @@
-<div class="teacher-form-backdrop">
-  <ion-card class="teacher-form-card">
-    <ion-card-header class="teacher-form-header">
+<div class="student-form-backdrop">
+  <ion-card class="student-form-card">
+    <ion-card-header class="student-form-header">
       <ion-card-title>{{
-        teacher ? "Edit Teacher" : "Add New Teacher"
+        student ? "Edit Student" : "Add New Student"
       }}</ion-card-title>
       <ion-button
         fill="clear"
         size="small"
-        (click)="onClose()"
-        class="teacher-form-close-btn"
+        (click)="onCancel()"
+        class="student-form-close-btn"
       >
         <ion-icon name="close" slot="icon-only"></ion-icon>
       </ion-button>
@@ -18,23 +18,13 @@
       <form
         [formGroup]="form"
         (ngSubmit)="onSubmit()"
-        class="teacher-form-form"
+        class="student-form-form"
       >
         <ion-item lines="none">
-          <ion-label position="stacked">First Name *</ion-label>
+          <ion-label position="stacked">Name *</ion-label>
           <ion-input
-            formControlName="firstName"
-            placeholder="Enter first name"
-            required
-          >
-          </ion-input>
-        </ion-item>
-
-        <ion-item lines="none">
-          <ion-label position="stacked">Last Name *</ion-label>
-          <ion-input
-            formControlName="lastName"
-            placeholder="Enter last name"
+            formControlName="name"
+            placeholder="Enter full name"
             required
           >
           </ion-input>
@@ -52,43 +42,40 @@
         </ion-item>
 
         <ion-item lines="none">
-          <ion-label position="stacked">Phone *</ion-label>
+          <ion-label position="stacked">Phone Number</ion-label>
           <ion-input
-            formControlName="phone"
+            formControlName="phoneNumber"
             placeholder="Enter phone number"
-            required
           >
           </ion-input>
         </ion-item>
 
         <ion-item lines="none">
-          <ion-label position="stacked">Department *</ion-label>
-          <ion-input
-            formControlName="department"
-            placeholder="Enter department"
-            required
-          >
+          <ion-label position="stacked">Date of Birth</ion-label>
+          <ion-input formControlName="dateOfBirth" type="date"> </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">Address</ion-label>
+          <ion-input formControlName="address" placeholder="Enter address">
           </ion-input>
         </ion-item>
 
         <ion-item lines="none">
-          <ion-label position="stacked">Subject *</ion-label>
-          <ion-input
-            formControlName="subject"
-            placeholder="Enter subject"
-            required
-          >
-          </ion-input>
+          <ion-label position="stacked">Enrollment Date</ion-label>
+          <ion-input formControlName="enrollmentDate" type="date"> </ion-input>
         </ion-item>
 
         <ion-item lines="none">
-          <ion-label position="stacked">Hire Date *</ion-label>
-          <ion-input formControlName="hireDate" type="date" required>
-          </ion-input>
+          <ion-label position="stacked">Status</ion-label>
+          <ion-select formControlName="status">
+            <ion-select-option value="active">Active</ion-select-option>
+            <ion-select-option value="inactive">Inactive</ion-select-option>
+          </ion-select>
         </ion-item>
 
         <!-- Form Actions -->
-        <div class="teacher-form-actions">
+        <div class="student-form-actions">
           <ion-button
             expand="block"
             type="submit"
@@ -96,14 +83,14 @@
             color="primary"
           >
             <ion-icon name="checkmark" slot="start"></ion-icon>
-            {{ teacher ? "Update Teacher" : "Add Teacher" }}
+            {{ student ? "Update Student" : "Add Student" }}
           </ion-button>
 
           <ion-button
             expand="block"
             fill="outline"
             type="button"
-            (click)="onClose()"
+            (click)="onCancel()"
             color="medium"
           >
             <ion-icon name="close" slot="start"></ion-icon>

@@ -1,0 +1,165 @@
+.students {
+  width: 100%;
+  max-width: 1200px;
+  margin: 2rem auto 0 auto;
+  padding: 1rem;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  &__title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+  }
+
+  &__subtitle {
+    color: #666;
+    margin-bottom: 0;
+  }
+
+  &__add-btn {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: 0;
+    min-width: 160px;
+  }
+
+  &__search {
+    margin-bottom: 1.5rem;
+
+    ion-searchbar {
+      --background: transparent;
+      --box-shadow: none;
+      padding: 0;
+    }
+  }
+
+  &__no-results {
+    text-align: center;
+    padding: 2rem;
+    color: var(--ion-color-medium);
+
+    ion-icon {
+      font-size: 3rem;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  &__card {
+    margin: 0;
+    height: 100%;
+    border-radius: 12px;
+
+    ion-card-header {
+      padding: 1rem;
+    }
+
+    ion-card-content {
+      padding: 0 1rem 1rem;
+    }
+  }
+
+  &__card-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  &__card-department {
+    color: var(--ion-color-medium);
+    margin: 0.25rem 0 0;
+    font-size: 0.875rem;
+  }
+
+  &__card-details {
+    margin-bottom: 1rem;
+
+    p {
+      margin: 0.5rem 0;
+      font-size: 0.875rem;
+    }
+  }
+
+  &__card-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+
+    ion-button {
+      flex: 1;
+      min-width: 0;
+
+      &[color="danger"] {
+        flex: 0 0 auto;
+        width: auto;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .students {
+    margin-top: 1.5rem;
+  }
+  .students__header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .students__add-btn {
+    margin: 0 auto;
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+// Utility classes
+.flex {
+  display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.h-12 {
+  height: 3rem;
+}
+
+.w-12 {
+  width: 3rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.text-gray-400 {
+  color: var(--ion-color-medium);
+}
