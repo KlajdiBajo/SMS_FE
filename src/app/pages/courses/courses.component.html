@@ -1,0 +1,88 @@
+<!-- courses.component.html -->
+<div class="courses">
+  <!-- Header -->
+  <div class="courses__header ion-padding">
+    <div>
+      <h1 class="courses__title">Courses</h1>
+      <p class="courses__subtitle">Manage your school's courses</p>
+    </div>
+    <ion-button color="primary" (click)="openAddForm()" class="courses__add-btn">
+      Add Course
+    </ion-button>
+  </div>
+
+  <!-- Search -->
+  <ion-card class="courses__search">
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-icon name="search" slot="start" class="courses__search-icon"></ion-icon>
+        <ion-input
+          placeholder="Search courses by name, code, or department..."
+          [(ngModel)]="searchTerm"
+          (ionInput)="onSearchChange()"
+        ></ion-input>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Courses Grid -->
+  <div class="courses__grid">
+    <ion-card *ngFor="let course of filteredCourses" class="courses__card">
+      <ion-card-header class="card__header">
+        <div class="course-info">
+          <div>
+            <ion-card-title class="courses__card-name">{{ course.name }}</ion-card-title>
+            <p class="courses__card-code">{{ course.code }}</p>
+            <p class="courses__card-department">{{ course.department }}</p>
+          </div>
+          <span [class]="'status-badge ' + getStatusClass(course.status)">
+            {{ capitalize(course.status) }}
+          </span>
+        </div>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="courses__card-details">
+          <p><strong>Credits:</strong> {{ course.credits }}</p>
+          <p><strong>Duration:</strong> {{ course.duration }}</p>
+          <p><strong>Enrollment:</strong> {{ course.enrolledStudents }}/{{ course.capacity }}</p>
+          <p><strong>Teachers:</strong> {{ course.teachers.length }}</p>
+        </div>
+        <div class="courses__card-actions">
+          <ion-button fill="outline" size="small" (click)="openDetails(course)">
+            View
+          </ion-button>
+          <ion-button fill="outline" size="small" (click)="openEditForm(course)">
+            Edit
+          </ion-button>
+          <ion-button color="danger" fill="outline" size="small" (click)="handleDeleteCourse(course.id)">
+            Delete
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="filteredCourses.length === 0" class="courses__no-results">
+    <ion-icon name="book-outline" class="no-results-icon"></ion-icon>
+    <p>No courses found matching your search.</p>
+  </div>
+
+  <!-- Course Form Modal -->
+  <app-course-form
+    [course]="editingCourse"
+    [isOpen]="showForm"
+    (submit)="editingCourse ? handleEditCourse($event) : handleAddCourse($event)"
+    (cancel)="closeForm()">
+  </app-course-form>
+
+  <!-- Course Details Modal -->
+  <app-course-details
+    [course]="selectedCourse"
+    [isOpen]="showDetails"
+    (close)="closeDetails()"
+    (edit)="openEditForm($event)"
+    (delete)="handleDeleteCourse($event)"
+    (associateTeacher)="handleAssociateTeacher($event)"
+    (removeTeacher)="handleRemoveTeacher($event)">
+  </app-course-details>
+</div>

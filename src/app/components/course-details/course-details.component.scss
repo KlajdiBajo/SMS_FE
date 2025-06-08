@@ -213,8 +213,8 @@
 // Mobile responsiveness
 @media (max-width: 600px) {
   .course-details-backdrop {
-    padding: 1rem 0.5rem;
-    align-items: center;
+    padding: 1rem 0.5rem !important;
+    align-items: center !important; // Added !important to override the flex-start
   }
 
   .course-details-card {

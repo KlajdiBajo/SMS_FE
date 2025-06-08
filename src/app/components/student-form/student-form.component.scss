@@ -101,10 +101,28 @@
 @media (max-width: 600px) {
   .student-form-backdrop {
     padding: 2rem;
+    // Adjust alignment to position the modal slightly higher
+    align-items: flex-start;
+    padding-top: 8rem; // Add top padding to push modal down from very top
   }
 
   .student-form-card {
-    max-height: 90vh;
+    max-height: 85vh; // Slightly increase max height for mobile
+    margin-top: 0; // Remove any top margin
+  }
+
+  .student-form-header {
+    // Reduce padding slightly on mobile for better spacing
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
+    
+    ion-card-title {
+      font-size: 1.1rem; // Slightly smaller font on mobile
+    }
+  }
+
+  .student-form-close-btn {
+    top: 1rem;
+    right: 1rem;
   }
 
   .student-form-form {

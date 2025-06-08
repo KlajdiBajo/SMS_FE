@@ -81,18 +81,17 @@
   }
 }
 
-// Mobile responsiveness
 @media (max-width: 600px) {
   .teacher-details-backdrop {
     padding: 0.5rem;
-    align-items: flex-start;
-    padding-top: 2rem;
+    align-items: center;  // Changed from flex-start to center
+    padding-top: 0.5rem;  // Reduced from 2rem to 0.5rem
   }
 
   .teacher-details-card {
     max-width: 100%;
     max-height: 90vh;
-    border-radius: 12px 12px 0 0;
+    border-radius: 12px;  // Removed the 12px 12px 0 0 to keep consistent radius
   }
 
   .teacher-details-header {
