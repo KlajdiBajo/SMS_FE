@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonSearchbar, IonCard, IonCardHeader, IonCardContent, IonCardTitle, IonBadge, IonGrid, IonRow, IonCol, IonModal, IonButtons } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonSearchbar, IonCard, IonCardHeader, IonCardContent, IonBadge, IonGrid, IonRow, IonCol } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { search, people, add, create, trash, eye } from 'ionicons/icons';
 import { ToastController } from '@ionic/angular';
@@ -15,8 +15,8 @@ import { StudentDetailsComponent, Student, Course } from '../../components/stude
   standalone: true,
   imports: [
     IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon,
-    IonSearchbar, IonCard, IonCardHeader, IonCardContent, IonCardTitle,
-    IonBadge, IonGrid, IonRow, IonCol, IonModal, IonButtons, CommonModule, FormsModule,
+    IonSearchbar, IonCard, IonCardHeader, IonCardContent,
+    IonBadge, IonGrid, IonRow, IonCol, CommonModule, FormsModule,
     StudentFormComponent, StudentDetailsComponent
   ]
 })

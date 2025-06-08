@@ -97,6 +97,7 @@
             fill="outline"
             (click)="showTeacherModal = true"
             class="add-teacher-btn"
+            [disabled]="course.teachers.length >= 1"
           >
             <ion-icon name="add-outline" slot="start"></ion-icon>
             Add Teacher

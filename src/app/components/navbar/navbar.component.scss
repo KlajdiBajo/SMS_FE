@@ -1,15 +1,15 @@
 // Import global variables
-@import '../../../theme/variables.scss';
+@import "../../../theme/variables.scss";
 
 :host {
   // Header and toolbar styles
   ion-header {
-    --background: #{$navbar-bg};
+    --background: #222428;
     position: relative;
   }
 
   ion-toolbar {
-    --background: #{$navbar-bg};
+    --background: #222428;
     --border-color: #{$medium-color};
     --border-width: 0 0 1px 0;
   }
@@ -142,12 +142,12 @@
           top: 7px;
           transform: rotate(135deg);
         }
-        
+
         &.middle-active {
           opacity: 0;
           left: -60px;
         }
-        
+
         &.bottom-active {
           top: 7px;
           transform: rotate(-135deg);
@@ -162,7 +162,7 @@
     top: 100%;
     right: 0;
     left: 0;
-    background: #{$navbar-bg};
+    background: #222428;
     border-top: 1px solid #{$medium-color};
     box-shadow: #{$box-shadow};
     z-index: 1000;
@@ -179,14 +179,14 @@
     }
 
     .navbar__mobile-dropdown-list {
-      background: #{$navbar-bg};
+      background: #222428;
       padding: 0;
       margin: 0;
     }
   }
 
   .navbar__mobile-link {
-    --background: #{$navbar-bg};
+    --background: #222428;
     --color: #{$navbar-text};
     color: #{$navbar-text};
     font-size: 1rem;
@@ -229,7 +229,7 @@
     .navbar__nav {
       display: none;
     }
-    
+
     .navbar__mobile-col {
       display: flex;
     }
@@ -239,7 +239,7 @@
     .navbar__mobile-col {
       display: none;
     }
-    
+
     .navbar__mobile-dropdown {
       display: none;
     }
@@ -254,7 +254,7 @@
   ion-col {
     display: flex;
     align-items: center;
-    
+
     &:last-child {
       justify-content: flex-end;
     }
@@ -267,7 +267,7 @@
   // Force the second column to take remaining space and align right
   ion-row {
     width: 100%;
-    
+
     ion-col:nth-child(2) {
       flex: 1;
       display: flex;

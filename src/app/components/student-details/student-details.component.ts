@@ -1,19 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
+
   IonButton,
   IonIcon,
-  IonBadge,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonGrid,
-  IonRow,
-  IonCol
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { close, create, trash, add } from 'ionicons/icons';
@@ -45,19 +35,8 @@ export interface Student {
   standalone: true,
   imports: [
     CommonModule,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
     IonButton,
     IonIcon,
-    IonBadge,
-    IonList,
-    IonItem,
-    IonLabel,
-    IonGrid,
-    IonRow,
-    IonCol
   ]
 })
 export class StudentDetailsComponent {

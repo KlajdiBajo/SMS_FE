@@ -20,8 +20,8 @@ export class CourseDetailsComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   @Output() edit = new EventEmitter<Course>();
   @Output() delete = new EventEmitter<string>();
-  @Output() associateTeacher = new EventEmitter<{courseId: string, teacherId: string}>();
-  @Output() removeTeacher = new EventEmitter<{courseId: string, teacherId: string}>();
+  @Output() associateTeacher = new EventEmitter<{ courseId: string, teacherId: string }>();
+  @Output() removeTeacher = new EventEmitter<{ courseId: string, teacherId: string }>();
 
   showTeacherModal: boolean = false;
   showDeleteConfirm: boolean = false;
@@ -73,7 +73,7 @@ export class CourseDetailsComponent implements OnInit {
   }
 
   onAssociateTeacher(teacherId: string) {
-    if (this.course) {
+    if (this.course && this.course.teachers.length < 1) {
       this.associateTeacher.emit({ courseId: this.course.id, teacherId });
       this.showTeacherModal = false;
       this.updateUnassignedTeachers();
