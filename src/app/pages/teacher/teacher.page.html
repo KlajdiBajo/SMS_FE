@@ -94,5 +94,8 @@
     *ngIf="isDetailsOpen && selectedTeacher"
     [teacher]="selectedTeacher"
     (close)="closeDetails()"
+    (view)="openViewDetails(selectedTeacher)"
+    (edit)="openEditForm(selectedTeacher)"
+    (delete)="handleDeleteTeacher(selectedTeacher.id)"
   ></app-teacher-details>
 </div>

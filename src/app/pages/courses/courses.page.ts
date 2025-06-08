@@ -5,15 +5,21 @@ import { FormsModule } from '@angular/forms';
 import { Course, CourseFormData, Teacher } from '../../../types/course';
 import { CourseFormComponent } from '../../components/course-form/course-form.component';
 import { CourseDetailsComponent } from '../../components/course-details/course-details.component';
+import { addIcons } from 'ionicons';
+import { add, create, eye, trash, search } from 'ionicons/icons';
 
 @Component({
   selector: 'app-courses',
-  templateUrl: './courses.component.html',
-  styleUrls: ['./courses.component.scss'],
+  templateUrl: './courses.page.html',
+  styleUrls: ['./courses.page.scss'],
   standalone: true,
   imports: [CommonModule, IonicModule, FormsModule, CourseFormComponent, CourseDetailsComponent],
 })
-export class CoursesComponent implements OnInit {
+export class CoursesPage implements OnInit {
+  constructor() {
+    addIcons({ add, create, eye, trash, search });
+  }
+
   searchTerm: string = '';
   showForm: boolean = false;
   showDetails: boolean = false;
@@ -150,7 +156,7 @@ export class CoursesComponent implements OnInit {
       if (index !== -1) {
         this.courses[index] = { ...this.courses[index], ...data };
         this.filterCourses();
-        
+
         // Update selected course if it's the one being edited
         if (this.selectedCourse && this.selectedCourse.id === this.editingCourse.id) {
           this.selectedCourse = { ...this.selectedCourse, ...data };
@@ -167,36 +173,36 @@ export class CoursesComponent implements OnInit {
     console.log('Course deleted successfully!');
   }
 
-  handleAssociateTeacher(event: {courseId: string, teacherId: string}) {
+  handleAssociateTeacher(event: { courseId: string, teacherId: string }) {
     const teacher = this.availableTeachers.find(t => t.id === event.teacherId);
     if (teacher) {
       const courseIndex = this.courses.findIndex(course => course.id === event.courseId);
       if (courseIndex !== -1) {
         this.courses[courseIndex].teachers.push(teacher);
-        
+
         // Update selected course if it's the one being modified
         if (this.selectedCourse && this.selectedCourse.id === event.courseId) {
           this.selectedCourse = { ...this.selectedCourse, teachers: [...this.selectedCourse.teachers, teacher] };
         }
-        
+
         this.filterCourses();
       }
     }
   }
 
-  handleRemoveTeacher(event: {courseId: string, teacherId: string}) {
+  handleRemoveTeacher(event: { courseId: string, teacherId: string }) {
     const courseIndex = this.courses.findIndex(course => course.id === event.courseId);
     if (courseIndex !== -1) {
       this.courses[courseIndex].teachers = this.courses[courseIndex].teachers.filter(t => t.id !== event.teacherId);
-      
+
       // Update selected course if it's the one being modified
       if (this.selectedCourse && this.selectedCourse.id === event.courseId) {
-        this.selectedCourse = { 
-          ...this.selectedCourse, 
-          teachers: this.selectedCourse.teachers.filter(t => t.id !== event.teacherId) 
+        this.selectedCourse = {
+          ...this.selectedCourse,
+          teachers: this.selectedCourse.teachers.filter(t => t.id !== event.teacherId)
         };
       }
-      
+
       this.filterCourses();
     }
   }
