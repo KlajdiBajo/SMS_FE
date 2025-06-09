@@ -12,7 +12,7 @@
             <span class="navbar__logo-text">EduManage</span>
           </div>
         </ion-col>
-        
+
         <!-- Desktop Navigation -->
         <ion-col class="ion-hide-md-down navbar__nav-col">
           <ion-buttons class="navbar__nav">
@@ -30,19 +30,13 @@
         </ion-col>
 
         <!-- Mobile Toggle Button - MOBILE ONLY -->
-        <ion-col 
-          size="auto" 
-          class="ion-hide-md-up navbar__mobile-col"
-        >
+        <ion-col size="auto" class="ion-hide-md-up navbar__mobile-col">
           <ion-button
             fill="clear"
             class="navbar__mobile-toggle"
             (click)="toggleMenu()"
           >
-            <div 
-              class="hamburger-icon"
-              [class.active]="isMenuOpen()"
-            >
+            <div class="hamburger-icon" [class.active]="isMenuOpen()">
               <span [ngClass]="{ 'top-active': isMenuOpen() }"></span>
               <span [ngClass]="{ 'middle-active': isMenuOpen() }"></span>
               <span [ngClass]="{ 'bottom-active': isMenuOpen() }"></span>
@@ -54,7 +48,10 @@
   </ion-toolbar>
 
   <!-- Mobile Dropdown Menu -->
-  <div class="navbar__mobile-dropdown ion-hide-md-up" [class.navbar__mobile-dropdown--open]="isMenuOpen()">
+  <div
+    class="navbar__mobile-dropdown ion-hide-md-up"
+    [class.navbar__mobile-dropdown--open]="isMenuOpen()"
+  >
     <ion-list class="navbar__mobile-dropdown-list">
       @for (item of navigation; track item.name) {
       <ion-item

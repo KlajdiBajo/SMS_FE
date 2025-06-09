@@ -1,66 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Teacher } from '../components/teacher-details/teacher-details.component';
-
-interface ApiResponse<T> {
-    status: Array<{
-        code: string;
-        severity: string;
-        message: string;
-        action: string;
-        helpReference: string;
-        traceId: string;
-    }>;
-    data: T;
-}
-
-interface PageableResponse<T> {
-    status: Array<{
-        code: string;
-        severity: string;
-        message: string;
-        action: string;
-        helpReference: string;
-        traceId: string;
-    }>;
-    slice: {
-        content: T[];
-        first: boolean;
-        last: boolean;
-        numberOfElements: number;
-        size: number;
-        number: number;
-        empty: boolean;
-        pageable: {
-            offset: number;
-            pageNumber: number;
-            pageSize: number;
-            paged: boolean;
-            unpaged: boolean;
-        };
-    };
-}
-
-interface FilterRequest {
-    filter: string;
-    pagination: {
-        pageNumber: number;
-        pageSize: number;
-        sort?: Array<{
-            field: string;
-            direction: string;
-            ignoreCase: boolean;
-            nullHandling: string;
-        }>;
-    };
-}
-
+import { Teacher } from '../interfaces/teacher.interface';
+import { environment } from '../../environments/environment';
+import { ApiResponse, PageableResponse, FilterRequest } from '../interfaces/teacher.interface';
 @Injectable({
     providedIn: 'root'
 })
 export class TeacherService {
-    private readonly API_URL = 'http://localhost:8080';
+    private readonly API_URL = environment.API_URL;
 
     constructor(private http: HttpClient) { }
 

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { IonicModule, ToastController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { TeacherFormComponent } from '../../components/teacher-form/teacher-form.component';
-import { TeacherDetailsComponent, Teacher } from '../../components/teacher-details/teacher-details.component';
+import { TeacherDetailsComponent } from '../../components/teacher-details/teacher-details.component';
+import { Teacher } from '../../interfaces/teacher.interface';
 import { FormsModule } from '@angular/forms';
 import { addIcons } from 'ionicons';
 import { add, create, eye, trash, close } from 'ionicons/icons';
@@ -145,8 +146,8 @@ export class TeacherPage implements OnInit {
     }
   }
 
-  handleDeleteTeacher(teacherId: string) {
-    this.teacherService.deleteTeacher(Number(teacherId)).subscribe({
+  handleDeleteTeacher(teacherId: number) {
+    this.teacherService.deleteTeacher(teacherId).subscribe({
       next: () => {
         this.loadTeachers();
         this.isDetailsOpen = false;

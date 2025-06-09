@@ -1,7 +1,6 @@
-// course-form.component.ts
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Course, CourseFormData } from '../../../types/course';
+import { Course, CourseFormData } from '../../interfaces/course.interface';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -20,7 +19,7 @@ import { IonicModule } from '@ionic/angular';
 export class CourseFormComponent implements OnInit, OnChanges {
   @Input() course?: Course;
   @Input() isOpen: boolean = false;
-  @Output() submit = new EventEmitter<CourseFormData>();
+  @Output() formSubmit = new EventEmitter<CourseFormData>();
   @Output() cancel = new EventEmitter<void>();
 
   courseForm: FormGroup;
@@ -43,14 +42,10 @@ export class CourseFormComponent implements OnInit, OnChanges {
 
   createForm(): FormGroup {
     return this.formBuilder.group({
-      name: ['', [Validators.required]],
       code: ['', [Validators.required]],
+      title: ['', [Validators.required]],
       description: [''],
-      credits: [0, [Validators.min(1), Validators.max(10)]],
-      department: ['', [Validators.required]],
-      duration: [''],
-      capacity: [0, [Validators.min(1)]],
-      status: ['active']
+      year: [2024, [Validators.required, Validators.min(1900), Validators.max(2100)]]
     });
   }
 
@@ -63,35 +58,28 @@ export class CourseFormComponent implements OnInit, OnChanges {
   populateForm() {
     if (this.course) {
       this.courseForm.patchValue({
-        name: this.course.name,
         code: this.course.code,
+        title: this.course.title,
         description: this.course.description,
-        credits: this.course.credits,
-        department: this.course.department,
-        duration: this.course.duration,
-        capacity: this.course.capacity,
-        status: this.course.status
+        year: this.course.year
       });
     }
   }
 
   resetForm() {
     this.courseForm.reset({
-      name: '',
       code: '',
+      title: '',
       description: '',
-      credits: 0,
-      department: '',
-      duration: '',
-      capacity: 0,
-      status: 'active'
+      year: 2024
     });
   }
 
   onSubmit() {
+    console.log('onSubmit called', this.courseForm.value);
     if (this.courseForm.valid) {
       const formData: CourseFormData = this.courseForm.value;
-      this.submit.emit(formData);
+      this.formSubmit.emit(formData);
     } else {
       // Mark all fields as touched to show validation errors
       this.courseForm.markAllAsTouched();
@@ -126,5 +114,11 @@ export class CourseFormComponent implements OnInit, OnChanges {
       }
     }
     return '';
+  }
+
+  onBackdropClick(event: MouseEvent) {
+    if ((event.target as HTMLElement).classList.contains('course-form-backdrop')) {
+      this.onCancel();
+    }
   }
 }

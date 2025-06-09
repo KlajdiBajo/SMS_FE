@@ -2,12 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { Course, CourseFormData, Teacher } from '../../../types/course';
+import { Course, CourseFormData } from '../../interfaces/course.interface';
+import { Teacher } from '../../interfaces/teacher.interface';
 import { CourseFormComponent } from '../../components/course-form/course-form.component';
 import { CourseDetailsComponent } from '../../components/course-details/course-details.component';
 import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
 import { addIcons } from 'ionicons';
 import { add, create, eye, trash, search, close } from 'ionicons/icons';
+import { CourseService } from '../../services/course.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-courses',
@@ -17,7 +20,7 @@ import { add, create, eye, trash, search, close } from 'ionicons/icons';
   imports: [CommonModule, IonicModule, FormsModule, CourseFormComponent, CourseDetailsComponent, SearchBarComponent],
 })
 export class CoursesPage implements OnInit {
-  constructor() {
+  constructor(private courseService: CourseService) {
     addIcons({ add, create, eye, trash, search, close });
   }
 
@@ -31,85 +34,31 @@ export class CoursesPage implements OnInit {
 
   // Available teachers for association
   availableTeachers: Teacher[] = [
-    { id: '1', name: 'Dr. Sarah Johnson', email: 'sarah@school.edu', department: 'Computer Science', subject: 'Programming' },
-    { id: '2', name: 'Prof. Michael Brown', email: 'michael@school.edu', department: 'Mathematics', subject: 'Calculus' },
-    { id: '3', name: 'Dr. Emily Davis', email: 'emily@school.edu', department: 'Physics', subject: 'Quantum Physics' },
-    { id: '4', name: 'Prof. James Wilson', email: 'james@school.edu', department: 'Chemistry', subject: 'Organic Chemistry' },
-    { id: '5', name: 'Dr. Lisa Anderson', email: 'lisa@school.edu', department: 'Biology', subject: 'Molecular Biology' }
+    { id: 1, firstName: 'Sarah', lastName: 'Johnson', title: 'Dr.' },
+    { id: 2, firstName: 'Michael', lastName: 'Brown', title: 'Prof.' },
+    { id: 3, firstName: 'Emily', lastName: 'Davis', title: 'Dr.' },
+    { id: 4, firstName: 'James', lastName: 'Wilson', title: 'Prof.' },
+    { id: 5, firstName: 'Lisa', lastName: 'Anderson', title: 'Dr.' }
   ];
 
   ngOnInit() {
-    this.loadCourses();
-    this.filterCourses();
-  }
-
-  loadCourses() {
-    // Sample courses data
-    this.courses = [
-      {
-        id: '1',
-        name: 'Computer Science',
-        code: 'CS101',
-        description: 'Fundamental concepts of programming and computer science',
-        credits: 3,
-        department: 'Computer Science',
-        duration: '1 semester',
-        capacity: 30,
-        enrolledStudents: 25,
-        status: 'active',
-        teachers: [
-          { id: '1', name: 'Dr. Sarah Johnson', email: 'sarah@school.edu', department: 'Computer Science', subject: 'Programming' }
-        ]
-      },
-      {
-        id: '2',
-        name: 'Advanced Mathematics',
-        code: 'MATH301',
-        description: 'Linear algebra, differential equations, and advanced calculus',
-        credits: 4,
-        department: 'Mathematics',
-        duration: '1 semester',
-        capacity: 25,
-        enrolledStudents: 20,
-        status: 'active',
-        teachers: [
-          { id: '2', name: 'Prof. Michael Brown', email: 'michael@school.edu', department: 'Mathematics', subject: 'Calculus' }
-        ]
-      },
-      {
-        id: '3',
-        name: 'Quantum Physics',
-        code: 'PHYS401',
-        description: 'Introduction to quantum mechanics and modern physics',
-        credits: 4,
-        department: 'Physics',
-        duration: '1 semester',
-        capacity: 20,
-        enrolledStudents: 18,
-        status: 'active',
-        teachers: [
-          { id: '3', name: 'Dr. Emily Davis', email: 'emily@school.edu', department: 'Physics', subject: 'Quantum Physics' }
-        ]
-      }
-    ];
-    this.filterCourses();
-  }
-
-  onSearchChange() {
     this.filterCourses();
   }
 
   filterCourses() {
-    if (!this.searchTerm) {
-      this.filteredCourses = [...this.courses];
-    } else {
-      const term = this.searchTerm.toLowerCase();
-      this.filteredCourses = this.courses.filter(course =>
-        course.name.toLowerCase().includes(term) ||
-        course.code.toLowerCase().includes(term) ||
-        course.department.toLowerCase().includes(term)
-      );
-    }
+    const pagination = {
+      pageNumber: 0,
+      pageSize: 100,
+      sort: []
+    };
+    this.courseService.filterCourses(this.searchTerm, pagination).subscribe(res => {
+      this.filteredCourses = res.slice?.content || [];
+      this.courses = this.filteredCourses;
+    });
+  }
+
+  onSearchChange() {
+    this.filterCourses();
   }
 
   openAddForm() {
@@ -138,73 +87,51 @@ export class CoursesPage implements OnInit {
   }
 
   handleAddCourse(data: CourseFormData) {
-    const newCourse: Course = {
-      ...data,
-      id: Date.now().toString(),
-      enrolledStudents: 0,
-      teachers: []
-    };
-    this.courses.push(newCourse);
-    this.filterCourses();
-    this.closeForm();
-    console.log('Course added successfully!');
-    // In a real app, you'd use a toast service here
+    console.log('handleAddCourse called', data);
+    const { code, title, description, year } = data;
+    const body = { code, title, description, year };
+    this.courseService.upsertCourse(body).subscribe(res => {
+      this.filterCourses();
+      this.closeForm();
+    });
   }
 
   handleEditCourse(data: CourseFormData) {
     if (this.editingCourse) {
-      const index = this.courses.findIndex(course => course.id === this.editingCourse!.id);
-      if (index !== -1) {
-        this.courses[index] = { ...this.courses[index], ...data };
+      console.log('handleEditCourse called', data);
+      const { code, title, description, year } = data;
+      const body = { code, title, description, year, id: this.editingCourse.id };
+      this.courseService.upsertCourse(body).subscribe(res => {
         this.filterCourses();
-
-        // Update selected course if it's the one being edited
-        if (this.selectedCourse && this.selectedCourse.id === this.editingCourse.id) {
-          this.selectedCourse = { ...this.selectedCourse, ...data };
-        }
-      }
-      this.closeForm();
-      console.log('Course updated successfully!');
+        this.closeForm();
+      });
     }
   }
 
-  handleDeleteCourse(courseId: string) {
-    this.courses = this.courses.filter(course => course.id !== courseId);
-    this.filterCourses();
-    console.log('Course deleted successfully!');
-  }
-
-  handleAssociateTeacher(event: { courseId: string, teacherId: string }) {
-    const teacher = this.availableTeachers.find(t => t.id === event.teacherId);
-    if (teacher) {
-      const courseIndex = this.courses.findIndex(course => course.id === event.courseId);
-      if (courseIndex !== -1) {
-        this.courses[courseIndex].teachers.push(teacher);
-
-        // Update selected course if it's the one being modified
-        if (this.selectedCourse && this.selectedCourse.id === event.courseId) {
-          this.selectedCourse = { ...this.selectedCourse, teachers: [...this.selectedCourse.teachers, teacher] };
-        }
-
-        this.filterCourses();
-      }
-    }
-  }
-
-  handleRemoveTeacher(event: { courseId: string, teacherId: string }) {
-    const courseIndex = this.courses.findIndex(course => course.id === event.courseId);
-    if (courseIndex !== -1) {
-      this.courses[courseIndex].teachers = this.courses[courseIndex].teachers.filter(t => t.id !== event.teacherId);
-
-      // Update selected course if it's the one being modified
-      if (this.selectedCourse && this.selectedCourse.id === event.courseId) {
-        this.selectedCourse = {
-          ...this.selectedCourse,
-          teachers: this.selectedCourse.teachers.filter(t => t.id !== event.teacherId)
-        };
-      }
-
+  handleDeleteCourse(courseId: number) {
+    this.courseService.deleteCourse(courseId).subscribe(res => {
       this.filterCourses();
+    });
+  }
+
+  handleAssociateTeacher(event: { courseId: number, teacherId: number }) {
+    this.courseService.associateTeacherToCourse(event.teacherId, event.courseId).subscribe(res => {
+      this.courseService.getCourse(event.courseId).subscribe(courseRes => {
+        this.selectedCourse = courseRes.data;
+        this.filterCourses();
+      });
+    });
+  }
+
+  handleRemoveTeacher(event: { courseId: number }) {
+    const course = this.courses.find(c => c.id === event.courseId);
+    if (course && course.teacher) {
+      this.courseService.removeTeacherFromCourse(course.teacher.id, event.courseId).subscribe(res => {
+        this.courseService.getCourse(event.courseId).subscribe(courseRes => {
+          this.selectedCourse = courseRes.data;
+          this.filterCourses();
+        });
+      });
     }
   }
 

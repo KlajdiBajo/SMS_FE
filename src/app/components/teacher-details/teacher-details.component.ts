@@ -3,13 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { close, create, trash } from 'ionicons/icons';
-
-export interface Teacher {
-  id: string;
-  firstName: string;
-  lastName: string;
-  title: string;
-}
+import { Teacher } from '../../interfaces/teacher.interface';
 
 @Component({
   selector: 'app-teacher-details',

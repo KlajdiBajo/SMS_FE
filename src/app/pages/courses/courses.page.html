@@ -18,7 +18,7 @@
 
     <app-search-bar
       [(value)]="searchTerm"
-      placeholder="Search courses by name, code, or department..."
+      placeholder="Search courses by title, code, or teacher..."
       (valueChange)="onSearchChange()"
     ></app-search-bar>
 
@@ -28,26 +28,23 @@
         <ion-card-header class="card__header">
           <div class="course-info">
             <div>
-              <ion-card-title class="courses__card-name"
-                >{{ course.name }}</ion-card-title
-              >
+              <ion-card-title class="courses__card-name">
+                {{ course.title }}
+              </ion-card-title>
               <p class="courses__card-code">{{ course.code }}</p>
-              <p class="courses__card-department">{{ course.department }}</p>
             </div>
-            <span [class]="'status-badge ' + getStatusClass(course.status)">
-              {{ capitalize(course.status) }}
-            </span>
           </div>
         </ion-card-header>
         <ion-card-content>
           <div class="courses__card-details">
-            <p><strong>Credits:</strong> {{ course.credits }}</p>
-            <p><strong>Duration:</strong> {{ course.duration }}</p>
-            <p>
-              <strong>Enrollment:</strong> {{ course.enrolledStudents }}/{{
-              course.capacity }}
+            <p><strong>Description:</strong> {{ course.description }}</p>
+            <p><strong>Year:</strong> {{ course.year }}</p>
+            <p *ngIf="course.teacher">
+              <strong>Teacher:</strong>
+              {{ course.teacher.title }} {{ course.teacher.firstName }} {{
+              course.teacher.lastName }}
             </p>
-            <p><strong>Teachers:</strong> {{ course.teachers.length }}</p>
+            <p *ngIf="!course.teacher"><strong>Teacher:</strong> None</p>
           </div>
           <div class="courses__card-actions">
             <ion-button
@@ -89,9 +86,7 @@
     <app-course-form
       [course]="editingCourse"
       [isOpen]="showForm"
-      (submit)="
-        editingCourse ? handleEditCourse($event) : handleAddCourse($event)
-      "
+      (formSubmit)="editingCourse ? handleEditCourse($event) : handleAddCourse($event)"
       (cancel)="closeForm()"
     >
     </app-course-form>

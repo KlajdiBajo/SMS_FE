@@ -1,8 +1,10 @@
-// course-details.component.ts
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { Course, Teacher } from '../../../types/course';
+import { Course } from '../../interfaces/course.interface';
+import { Teacher } from '../../interfaces/teacher.interface';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
+import { TeacherService } from '../../services/teacher.service';
+import { CourseService } from '../../services/course.service';
 
 @Component({
   selector: 'app-course-details',
@@ -19,23 +21,17 @@ export class CourseDetailsComponent implements OnInit {
   @Input() isOpen: boolean = false;
   @Output() close = new EventEmitter<void>();
   @Output() edit = new EventEmitter<Course>();
-  @Output() delete = new EventEmitter<string>();
-  @Output() associateTeacher = new EventEmitter<{ courseId: string, teacherId: string }>();
-  @Output() removeTeacher = new EventEmitter<{ courseId: string, teacherId: string }>();
+  @Output() delete = new EventEmitter<number>();
+  @Output() associateTeacher = new EventEmitter<{ courseId: number, teacherId: number }>();
+  @Output() removeTeacher = new EventEmitter<{ courseId: number }>();
 
   showTeacherModal: boolean = false;
   showDeleteConfirm: boolean = false;
-  showRemoveTeacherConfirm: string | null = null;
+  showRemoveTeacherConfirm: number | null = null;
   unassignedTeachers: Teacher[] = [];
+  availableTeachers: Teacher[] = [];
 
-  // Sample available teachers - in real app, this would come from a service
-  availableTeachers: Teacher[] = [
-    { id: '1', name: 'Dr. Sarah Johnson', email: 'sarah@school.edu', department: 'Computer Science', subject: 'Programming' },
-    { id: '2', name: 'Prof. Michael Brown', email: 'michael@school.edu', department: 'Mathematics', subject: 'Calculus' },
-    { id: '3', name: 'Dr. Emily Davis', email: 'emily@school.edu', department: 'Physics', subject: 'Quantum Physics' },
-    { id: '4', name: 'Prof. James Wilson', email: 'james@school.edu', department: 'Chemistry', subject: 'Organic Chemistry' },
-    { id: '5', name: 'Dr. Lisa Anderson', email: 'lisa@school.edu', department: 'Biology', subject: 'Molecular Biology' }
-  ];
+  constructor(private teacherService: TeacherService, private courseService: CourseService) { }
 
   ngOnInit() {
     this.updateUnassignedTeachers();
@@ -45,10 +41,22 @@ export class CourseDetailsComponent implements OnInit {
     this.updateUnassignedTeachers();
   }
 
+  openTeacherModal() {
+    if (this.course && this.course.teacher) {
+      // If a teacher is already assigned, do not open the modal
+      return;
+    }
+    this.teacherService.filterTeachers('', 0, 100).subscribe(res => {
+      this.availableTeachers = res.slice?.content || [];
+      this.updateUnassignedTeachers();
+      this.showTeacherModal = true;
+    });
+  }
+
   updateUnassignedTeachers() {
     if (this.course) {
       this.unassignedTeachers = this.availableTeachers.filter(
-        teacher => !this.course!.teachers.some(courseTeacher => courseTeacher.id === teacher.id)
+        teacher => !this.course!.teacher || this.course!.teacher.id !== teacher.id
       );
     }
   }
@@ -72,22 +80,19 @@ export class CourseDetailsComponent implements OnInit {
     }
   }
 
-  onAssociateTeacher(teacherId: string) {
-    if (this.course && this.course.teachers.length < 1) {
+  onAssociateTeacher(teacherId: number) {
+    if (this.course && !this.course.teacher) {
       this.associateTeacher.emit({ courseId: this.course.id, teacherId });
       this.showTeacherModal = false;
       this.updateUnassignedTeachers();
-      // In Angular, you'd typically use a toast service here
-      console.log('Teacher associated successfully!');
     }
   }
 
-  onRemoveTeacher(teacherId: string) {
+  onRemoveTeacher() {
     if (this.course) {
-      this.removeTeacher.emit({ courseId: this.course.id, teacherId });
+      this.removeTeacher.emit({ courseId: this.course.id });
       this.showRemoveTeacherConfirm = null;
       this.updateUnassignedTeachers();
-      console.log('Teacher removed from course!');
     }
   }
 
