@@ -1,24 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonInput, IonSelect, IonSelectOption, IonItem, IonLabel, IonIcon } from '@ionic/angular/standalone';
+import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonInput, IonItem, IonLabel, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { close } from 'ionicons/icons';
-
-export interface StudentFormData {
-  name: string;
-  email: string;
-  phoneNumber: string;
-  dateOfBirth: string;
-  address: string;
-  enrollmentDate: string;
-  status: 'active' | 'inactive' | 'graduated' | string;
-}
-
-export interface Student extends StudentFormData {
-  id: string;
-  courses: any[]; // You can replace 'any' with Course[] if you have a Course interface
-}
+import { Student, StudentFormData } from '../../interfaces/student.interface';
 
 @Component({
   selector: 'app-student-form',
@@ -34,8 +20,6 @@ export interface Student extends StudentFormData {
     IonCardContent,
     IonButton,
     IonInput,
-    IonSelect,
-    IonSelectOption,
     IonItem,
     IonLabel,
     IonIcon
@@ -52,29 +36,21 @@ export class StudentFormComponent implements OnChanges {
   constructor(private fb: FormBuilder) {
     addIcons({ close });
     this.form = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phoneNumber: [''],
-      dateOfBirth: [''],
-      address: [''],
-      enrollmentDate: [''],
-      status: ['active', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      serialNumber: ['', Validators.required],
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['student'] && this.student) {
       this.form.patchValue({
-        name: this.student.name,
-        email: this.student.email,
-        phoneNumber: this.student.phoneNumber,
-        dateOfBirth: this.student.dateOfBirth,
-        address: this.student.address,
-        enrollmentDate: this.student.enrollmentDate,
-        status: this.student.status,
+        firstName: this.student.firstName,
+        lastName: this.student.lastName,
+        serialNumber: this.student.serialNumber,
       });
     } else if (changes['student'] && !this.student) {
-      this.form.reset({ status: 'active' });
+      this.form.reset();
     }
   }
 

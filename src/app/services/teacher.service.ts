@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Teacher } from '../interfaces/teacher.interface';
 import { environment } from '../../environments/environment';
-import { ApiResponse, PageableResponse, FilterRequest } from '../interfaces/teacher.interface';
+import { ApiResponse, PageableResponse } from '../interfaces/teacher.interface';
 @Injectable({
     providedIn: 'root'
 })
@@ -24,23 +24,7 @@ export class TeacherService {
         return this.http.post<ApiResponse<void>>(`${this.API_URL}/deleteTeacher`, { id });
     }
 
-    filterTeachers(searchTerm: string = '', pageNumber: number = 0, pageSize: number = 10): Observable<PageableResponse<Teacher>> {
-        const request: FilterRequest = {
-            filter: searchTerm,
-            pagination: {
-                pageNumber,
-                pageSize,
-                sort: [
-                    {
-                        field: "lastName",
-                        direction: "ASC",
-                        ignoreCase: true,
-                        nullHandling: "NATIVE"
-                    }
-                ]
-            }
-        };
-
-        return this.http.post<PageableResponse<Teacher>>(`${this.API_URL}/filterTeachers`, request);
+    filterTeachers(filter: string, pagination: any): Observable<PageableResponse<Teacher>> {
+        return this.http.post<PageableResponse<Teacher>>(`${this.API_URL}/filterTeachers`, { filter, pagination });
     }
 } 

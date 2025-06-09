@@ -10,6 +10,7 @@ import { add, create, eye, trash, close } from 'ionicons/icons';
 import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
 import { TeacherService } from '../../services/teacher.service';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { getToastMessage } from '../../utils/toast.utils';
 
 @Component({
   selector: 'app-teacher',
@@ -27,11 +28,11 @@ export class TeacherPage implements OnInit {
   selectedTeacher: Teacher | null = null;
   private searchSubject = new Subject<string>();
   currentPage = 0;
-  pageSize = 1;
-  isFirst = true;
-  isLast = false;
+  pageSize = 2;
   totalPages = 1;
   totalElements = 0;
+  isFirst = true;
+  isLast = false;
 
   constructor(
     private teacherService: TeacherService,
@@ -50,31 +51,33 @@ export class TeacherPage implements OnInit {
       debounceTime(300),
       distinctUntilChanged()
     ).subscribe(term => {
-      this.currentPage = 0;
       this.loadTeachers();
     });
   }
 
   onSearchChange(term: string) {
     this.searchTerm = term;
-    this.searchSubject.next(term);
+    this.loadTeachers();
   }
 
   loadTeachers() {
-    this.teacherService.filterTeachers(this.searchTerm, this.currentPage, this.pageSize)
-      .subscribe({
-        next: (response) => {
-          this.teachers = response.slice.content;
-          this.isFirst = response.slice.first;
-          this.isLast = response.slice.last;
-          this.totalPages = response.slice.pageable && response.slice.pageable.pageSize ? Math.ceil(response.slice.numberOfElements / response.slice.pageable.pageSize) : 1;
-          this.totalElements = response.slice.numberOfElements;
-        },
-        error: (error) => {
-          console.error('Error loading teachers:', error);
-          this.presentToast('Error loading teachers');
-        }
-      });
+    const pagination = {
+      pageNumber: this.currentPage,
+      pageSize: this.pageSize,
+      sort: []
+    };
+    this.teacherService.filterTeachers(this.searchTerm, pagination).subscribe({
+      next: (response: any) => {
+        this.teachers = response.slice.content;
+        this.isFirst = response.slice.first;
+        this.isLast = response.slice.last;
+        this.totalPages = response.slice.pageable && response.slice.pageable.pageSize ? Math.ceil(response.slice.numberOfElements / response.slice.pageable.pageSize) : 1;
+        this.totalElements = response.slice.numberOfElements;
+      },
+      error: (error: any) => {
+        this.presentToast(getToastMessage(error, 'Error loading teachers'));
+      }
+    });
   }
 
   openAddForm() {
@@ -94,8 +97,7 @@ export class TeacherPage implements OnInit {
         this.isDetailsOpen = true;
       },
       error: (error) => {
-        console.error('Error loading teacher details:', error);
-        this.presentToast('Error loading teacher details');
+        this.presentToast(getToastMessage(error, 'Error loading teacher details'));
       }
     });
   }
@@ -113,13 +115,16 @@ export class TeacherPage implements OnInit {
   handleAddTeacher(teacherData: Omit<Teacher, 'id'>) {
     this.teacherService.upsertTeacher(teacherData).subscribe({
       next: (response) => {
-        this.loadTeachers();
-        this.isFormOpen = false;
-        this.presentToast('Teacher added successfully');
+        if (response.status && response.status[0]?.severity === 'ERROR') {
+          this.presentToast(getToastMessage(response));
+        } else {
+          this.loadTeachers();
+          this.isFormOpen = false;
+          this.presentToast('Teacher added successfully');
+        }
       },
       error: (error) => {
-        console.error('Error adding teacher:', error);
-        this.presentToast('Error adding teacher');
+        this.presentToast(getToastMessage(error, 'Error adding teacher'));
       }
     });
   }
@@ -133,14 +138,17 @@ export class TeacherPage implements OnInit {
 
       this.teacherService.upsertTeacher(updateData).subscribe({
         next: (response) => {
-          this.loadTeachers();
-          this.editingTeacher = null;
-          this.isFormOpen = false;
-          this.presentToast('Teacher updated successfully');
+          if (response.status && response.status[0]?.severity === 'ERROR') {
+            this.presentToast(getToastMessage(response));
+          } else {
+            this.loadTeachers();
+            this.editingTeacher = null;
+            this.isFormOpen = false;
+            this.presentToast('Teacher updated successfully');
+          }
         },
         error: (error) => {
-          console.error('Error updating teacher:', error);
-          this.presentToast('Error updating teacher');
+          this.presentToast(getToastMessage(error, 'Error updating teacher'));
         }
       });
     }
@@ -148,25 +156,22 @@ export class TeacherPage implements OnInit {
 
   handleDeleteTeacher(teacherId: number) {
     this.teacherService.deleteTeacher(teacherId).subscribe({
-      next: () => {
-        this.loadTeachers();
-        this.isDetailsOpen = false;
-        this.selectedTeacher = null;
-        this.presentToast('Teacher deleted successfully');
+      next: (response) => {
+        if (response.status && response.status[0]?.severity === 'ERROR') {
+          this.presentToast(getToastMessage(response));
+        } else {
+          this.loadTeachers();
+          this.isDetailsOpen = false;
+          this.selectedTeacher = null;
+          this.presentToast('Teacher deleted successfully');
+        }
       },
       error: (error) => {
-        console.error('Error deleting teacher:', error);
-        this.presentToast('Error deleting teacher');
+        this.presentToast(getToastMessage(error, 'Error deleting teacher'));
       }
     });
   }
 
-  goToFirstPage() {
-    if (!this.isFirst) {
-      this.currentPage = 0;
-      this.loadTeachers();
-    }
-  }
 
   goToPreviousPage() {
     if (!this.isFirst && this.currentPage > 0) {
@@ -178,6 +183,21 @@ export class TeacherPage implements OnInit {
   goToNextPage() {
     if (!this.isLast) {
       this.currentPage++;
+      this.loadTeachers();
+    }
+  }
+
+  onJumpToPage(event: any) {
+    const value = Number(event.detail.value) - 1;
+    if (!isNaN(value) && value >= 0 && value < this.totalPages) {
+      this.currentPage = value;
+      this.loadTeachers();
+    }
+  }
+
+  goToFirstPage() {
+    if (!this.isFirst) {
+      this.currentPage = 0;
       this.loadTeachers();
     }
   }

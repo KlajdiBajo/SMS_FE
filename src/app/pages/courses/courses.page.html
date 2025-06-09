@@ -18,7 +18,7 @@
 
     <app-search-bar
       [(value)]="searchTerm"
-      placeholder="Search courses by title, code, or teacher..."
+      placeholder="Search courses by code, title, or description..."
       (valueChange)="onSearchChange()"
     ></app-search-bar>
 
@@ -80,6 +80,27 @@
     <div *ngIf="filteredCourses.length === 0" class="courses__no-results">
       <ion-icon name="book-outline" class="no-results-icon"></ion-icon>
       <p>No courses found matching your search.</p>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div
+      class="courses__pagination"
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2rem;
+      "
+    >
+      <ion-button (click)="goToFirstPage()" [disabled]="isFirst"
+        >1st page</ion-button
+      >
+      <ion-button (click)="goToPreviousPage()" [disabled]="isFirst"
+        >Previous</ion-button
+      >
+      <span>Page {{ currentPage + 1 }} / {{ totalPages }}</span>
+      <ion-button (click)="goToNextPage()" [disabled]="isLast">Next</ion-button>
     </div>
 
     <!-- Course Form Modal -->

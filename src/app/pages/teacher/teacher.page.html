@@ -14,7 +14,7 @@
 
     <app-search-bar
       [(value)]="searchTerm"
-      placeholder="Search teachers by name or title..."
+      placeholder="Search teachers by name or surname..."
       (valueChange)="onSearchChange($event)"
     ></app-search-bar>
 
@@ -81,16 +81,14 @@
         margin-top: 2rem;
       "
     >
-      <ion-button size="small" (click)="goToFirstPage()" [disabled]="isFirst"
+      <ion-button (click)="goToFirstPage()" [disabled]="isFirst"
         >1st page</ion-button
       >
-      <ion-button size="small" (click)="goToPreviousPage()" [disabled]="isFirst"
+      <ion-button (click)="goToPreviousPage()" [disabled]="isFirst"
         >Previous</ion-button
       >
-      <span>Page {{ currentPage + 1 }}</span>
-      <ion-button size="small" (click)="goToNextPage()" [disabled]="isLast"
-        >Next</ion-button
-      >
+      <span>Page {{ currentPage + 1 }} / {{ totalPages }}</span>
+      <ion-button (click)="goToNextPage()" [disabled]="isLast">Next</ion-button>
     </div>
 
     <!-- Teacher Form Modal -->

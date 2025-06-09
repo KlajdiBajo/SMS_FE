@@ -46,7 +46,8 @@ export class CourseDetailsComponent implements OnInit {
       // If a teacher is already assigned, do not open the modal
       return;
     }
-    this.teacherService.filterTeachers('', 0, 100).subscribe(res => {
+    const pagination = { pageNumber: 0, pageSize: 10, sort: [] };
+    this.teacherService.filterTeachers('', pagination).subscribe((res: any) => {
       this.availableTeachers = res.slice?.content || [];
       this.updateUnassignedTeachers();
       this.showTeacherModal = true;

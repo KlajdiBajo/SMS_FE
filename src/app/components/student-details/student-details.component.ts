@@ -7,26 +7,8 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { close, create, trash, add } from 'ionicons/icons';
-
-export interface Course {
-  id: string;
-  name: string;
-  code: string;
-  credits: number;
-  instructor: string;
-}
-
-export interface Student {
-  id: string;
-  name: string;
-  email: string;
-  phoneNumber: string;
-  dateOfBirth: string;
-  address: string;
-  status: 'active' | 'inactive' | string;
-  enrollmentDate: string;
-  courses: Course[];
-}
+import { Student } from '../../interfaces/student.interface';
+import { Course } from '../../interfaces/course.interface';
 
 @Component({
   selector: 'app-student-details',
@@ -44,48 +26,31 @@ export class StudentDetailsComponent {
   @Input() isOpen = false;
   @Output() close = new EventEmitter<void>();
   @Output() edit = new EventEmitter<Student>();
-  @Output() delete = new EventEmitter<string>();
-  @Output() associateCourse = new EventEmitter<{ studentId: string; courseId: string }>();
-  @Output() removeCourse = new EventEmitter<{ studentId: string; courseId: string }>();
+  @Output() delete = new EventEmitter<number>();
+  @Output() associateCourse = new EventEmitter<{ studentId: number; courseId: number }>();
+  @Output() removeCourse = new EventEmitter<{ studentId: number; courseId: number }>();
 
   showCourseModal = false;
-  availableCourses: Course[] = [
-    { id: '1', name: 'Mathematics', code: 'MATH101', credits: 3, instructor: 'Dr. Smith' },
-    { id: '2', name: 'Physics', code: 'PHYS101', credits: 4, instructor: 'Dr. Johnson' },
-    { id: '3', name: 'Chemistry', code: 'CHEM101', credits: 3, instructor: 'Dr. Brown' },
-    { id: '4', name: 'Biology', code: 'BIO101', credits: 3, instructor: 'Dr. Davis' },
-  ];
 
   constructor() {
     addIcons({ close, create, trash, add });
   }
 
-  get enrolledCourseIds(): string[] {
-    return this.student?.courses?.map(c => c.id) || [];
-  }
-
-  get coursesToAdd(): Course[] {
-    return this.availableCourses.filter(c => !this.enrolledCourseIds.includes(c.id));
-  }
-
   handleDelete() {
     if (confirm('Are you sure you want to delete this student?')) {
       this.delete.emit(this.student.id);
-      // Optionally show a toast here
     }
   }
 
-  handleRemoveCourse(courseId: string) {
-    if (confirm('Are you sure you want to remove this course from the student?')) {
-      this.removeCourse.emit({ studentId: this.student.id, courseId });
-      // Optionally show a toast here
+  handleRemoveCourse() {
+    if (this.student.course && confirm('Are you sure you want to remove this course from the student?')) {
+      this.removeCourse.emit({ studentId: this.student.id, courseId: this.student.course.id });
     }
   }
 
-  handleAddCourse(course: Course) {
-    this.associateCourse.emit({ studentId: this.student.id, courseId: course.id });
+  handleAddCourse(courseId: number) {
+    this.associateCourse.emit({ studentId: this.student.id, courseId });
     this.showCourseModal = false;
-    // Optionally show a toast here
   }
 
   onEdit() {

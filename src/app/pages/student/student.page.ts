@@ -5,9 +5,12 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonCar
 import { addIcons } from 'ionicons';
 import { search, people, add, create, trash, eye } from 'ionicons/icons';
 import { ToastController } from '@ionic/angular';
-import { StudentFormComponent, StudentFormData } from '../../components/student-form/student-form.component';
-import { StudentDetailsComponent, Student, Course } from '../../components/student-details/student-details.component';
+import { StudentFormComponent } from '../../components/student-form/student-form.component';
+import { StudentDetailsComponent } from '../../components/student-details/student-details.component';
 import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
+import { Student, StudentFormData } from '../../interfaces/student.interface';
+import { StudentService } from '../../services/student.service';
+import { getToastMessage } from '../../utils/toast.utils';
 
 @Component({
   selector: 'app-student',
@@ -22,65 +25,53 @@ import { SearchBarComponent } from '../../components/search-bar/search-bar.compo
   ]
 })
 export class StudentPage implements OnInit {
-  students: Student[] = [
-    {
-      id: '1',
-      name: 'Alice Johnson',
-      email: 'alice.johnson@school.edu',
-      phoneNumber: '+1-555-0101',
-      dateOfBirth: '2000-03-15',
-      address: '123 Main St, City, State 12345',
-      enrollmentDate: '2022-09-01',
-      status: 'active',
-      courses: [
-        { id: '1', name: 'Mathematics', code: 'MATH101', credits: 3, instructor: 'Dr. Smith' },
-        { id: '2', name: 'Physics', code: 'PHYS101', credits: 4, instructor: 'Dr. Johnson' }
-      ]
-    },
-    {
-      id: '2',
-      name: 'Bob Smith',
-      email: 'bob.smith@school.edu',
-      phoneNumber: '+1-555-0102',
-      dateOfBirth: '1999-07-22',
-      address: '456 Oak Ave, City, State 12345',
-      enrollmentDate: '2021-09-01',
-      status: 'active',
-      courses: [
-        { id: '3', name: 'Chemistry', code: 'CHEM101', credits: 3, instructor: 'Dr. Brown' }
-      ]
-    },
-    {
-      id: '3',
-      name: 'Carol Davis',
-      email: 'carol.davis@school.edu',
-      phoneNumber: '+1-555-0103',
-      dateOfBirth: '2001-11-08',
-      address: '789 Pine St, City, State 12345',
-      enrollmentDate: '2023-01-15',
-      status: 'inactive',
-      courses: []
-    }
-  ];
-
+  students: Student[] = [];
   searchTerm: string = '';
   selectedStudent: Student | null = null;
   isFormOpen: boolean = false;
   isDetailsOpen: boolean = false;
   editingStudent: Student | undefined = undefined;
+  currentPage = 0;
+  pageSize = 2;
+  isFirst = true;
+  isLast = false;
+  totalPages = 1;
 
-  constructor(private toastController: ToastController) {
+  constructor(
+    private studentService: StudentService,
+    private toastController: ToastController
+  ) {
     addIcons({ search, people, add, create, trash, eye });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.loadStudents();
+  }
 
-  get filteredStudents(): Student[] {
-    return this.students.filter(student =>
-      student.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      student.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      student.id.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+  loadStudents() {
+    this.studentService.filterStudents(this.searchTerm, {
+      pageNumber: this.currentPage,
+      pageSize: this.pageSize,
+      sort: []
+    }).subscribe({
+      next: (response) => {
+        this.students = response.slice.content;
+        this.isFirst = response.slice.first;
+        this.isLast = response.slice.last;
+        this.totalPages = response.slice.pageable && response.slice.pageable.pageSize ? Math.ceil(response.slice.numberOfElements / response.slice.pageable.pageSize) : 1;
+      },
+      error: (error) => {
+        this.presentToast(getToastMessage(error, 'Error loading students'));
+      }
+    });
+  }
+
+  onSearchChange(term?: string) {
+    if (typeof term === 'string') {
+      this.searchTerm = term;
+    }
+    this.currentPage = 0;
+    this.loadStudents();
   }
 
   async handleAddStudent() {
@@ -95,91 +86,128 @@ export class StudentPage implements OnInit {
   }
 
   handleViewStudent(student: Student) {
-    this.selectedStudent = student;
-    this.isDetailsOpen = true;
-  }
-
-  async handleDeleteStudent(studentId: string) {
-    const alert = await this.toastController.create({
-      header: 'Confirm Delete',
-      message: 'Are you sure you want to delete this student?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        },
-        {
-          text: 'Delete',
-          handler: () => {
-            this.students = this.students.filter(s => s.id !== studentId);
-            this.isDetailsOpen = false;
-            this.presentToast('Student deleted successfully');
-          }
-        }
-      ]
-    });
-    await alert.present();
-  }
-
-  handleAssociateCourse(studentId: string, courseId: string) {
-    const availableCourses: Course[] = [
-      { id: '1', name: 'Mathematics', code: 'MATH101', credits: 3, instructor: 'Dr. Smith' },
-      { id: '2', name: 'Physics', code: 'PHYS101', credits: 4, instructor: 'Dr. Johnson' },
-      { id: '3', name: 'Chemistry', code: 'CHEM101', credits: 3, instructor: 'Dr. Brown' },
-      { id: '4', name: 'Biology', code: 'BIO101', credits: 3, instructor: 'Dr. Davis' },
-    ];
-
-    const course = availableCourses.find(c => c.id === courseId);
-    if (course) {
-      this.students = this.students.map(student =>
-        student.id === studentId
-          ? { ...student, courses: [...student.courses, course] }
-          : student
-      );
-
-      if (this.selectedStudent && this.selectedStudent.id === studentId) {
-        this.selectedStudent = {
-          ...this.selectedStudent,
-          courses: [...this.selectedStudent.courses, course]
-        };
+    this.studentService.getStudent(student.id).subscribe({
+      next: (response) => {
+        this.selectedStudent = response.data;
+        this.isDetailsOpen = true;
+      },
+      error: (error) => {
+        this.presentToast(getToastMessage(error, 'Error loading student details'));
       }
-    }
+    });
   }
 
-  handleRemoveCourse(studentId: string, courseId: string) {
-    this.students = this.students.map(student =>
-      student.id === studentId
-        ? { ...student, courses: student.courses.filter(c => c.id !== courseId) }
-        : student
-    );
+  handleDeleteStudent(studentId: number) {
+    this.studentService.deleteStudent(studentId).subscribe({
+      next: (response) => {
+        if (response.status && response.status[0]?.severity === 'ERROR') {
+          this.presentToast(getToastMessage(response));
+        } else {
+          this.studentService.filterStudents(this.searchTerm, {
+            pageNumber: this.currentPage,
+            pageSize: this.pageSize,
+            sort: []
+          }).subscribe({
+            next: (res) => {
+              if (res.slice.content.length === 0 && this.currentPage > 0) {
+                this.currentPage--;
+                this.loadStudents();
+              } else {
+                this.students = res.slice.content;
+                this.isFirst = res.slice.first;
+                this.isLast = res.slice.last;
+                this.totalPages = res.slice.pageable && res.slice.pageable.pageSize ? Math.ceil(res.slice.numberOfElements / res.slice.pageable.pageSize) : 1;
+              }
+            },
+            error: (error) => {
+              this.presentToast(getToastMessage(error, 'Error loading students'));
+            }
+          });
+          this.isDetailsOpen = false;
+          this.selectedStudent = null;
+          this.presentToast('Student deleted successfully');
+        }
+      },
+      error: (error) => {
+        this.presentToast(getToastMessage(error, 'Error deleting student'));
+      }
+    });
+  }
 
-    if (this.selectedStudent && this.selectedStudent.id === studentId) {
-      this.selectedStudent = {
-        ...this.selectedStudent,
-        courses: this.selectedStudent.courses.filter(c => c.id !== courseId)
-      };
-    }
+  handleAssociateCourse(event: { studentId: number, courseId: number }) {
+    this.studentService.associateStudentToCourse(event.studentId, event.courseId).subscribe({
+      next: (response) => {
+        if (response.status && response.status[0]?.severity === 'ERROR') {
+          this.presentToast(getToastMessage(response));
+        } else {
+          this.studentService.getStudent(event.studentId).subscribe({
+            next: (res) => {
+              this.selectedStudent = res.data;
+              this.loadStudents();
+            }
+          });
+        }
+      },
+      error: (error) => {
+        this.presentToast(getToastMessage(error, 'Error associating course'));
+      }
+    });
+  }
+
+  handleRemoveCourse(event: { studentId: number, courseId: number }) {
+    this.studentService.removeStudentFromCourse(event.studentId, event.courseId).subscribe({
+      next: (response) => {
+        if (response.status && response.status[0]?.severity === 'ERROR') {
+          this.presentToast(getToastMessage(response));
+        } else {
+          this.studentService.getStudent(event.studentId).subscribe({
+            next: (res) => {
+              this.selectedStudent = res.data;
+              this.loadStudents();
+            }
+          });
+        }
+      },
+      error: (error) => {
+        this.presentToast(getToastMessage(error, 'Error removing course'));
+      }
+    });
   }
 
   handleFormSubmit(data: StudentFormData) {
     if (this.editingStudent) {
-      this.students = this.students.map(s =>
-        s.id === this.editingStudent?.id
-          ? { ...s, ...data }
-          : s
-      );
-      this.presentToast('Student updated successfully');
+      const body = { ...data, id: this.editingStudent.id };
+      this.studentService.upsertStudent(body).subscribe({
+        next: (response) => {
+          if (response.status && response.status[0]?.severity === 'ERROR') {
+            this.presentToast(getToastMessage(response));
+          } else {
+            this.loadStudents();
+            this.isFormOpen = false;
+            this.editingStudent = undefined;
+            this.presentToast('Student updated successfully');
+          }
+        },
+        error: (error) => {
+          this.presentToast(getToastMessage(error, 'Error updating student'));
+        }
+      });
     } else {
-      const newStudent: Student = {
-        id: Date.now().toString(),
-        ...data,
-        courses: []
-      };
-      this.students = [...this.students, newStudent];
-      this.presentToast('Student added successfully');
+      this.studentService.upsertStudent(data).subscribe({
+        next: (response) => {
+          if (response.status && response.status[0]?.severity === 'ERROR') {
+            this.presentToast(getToastMessage(response));
+          } else {
+            this.loadStudents();
+            this.isFormOpen = false;
+            this.presentToast('Student added successfully');
+          }
+        },
+        error: (error) => {
+          this.presentToast(getToastMessage(error, 'Error adding student'));
+        }
+      });
     }
-    this.isFormOpen = false;
-    this.editingStudent = undefined;
   }
 
   handleFormCancel() {
@@ -190,6 +218,27 @@ export class StudentPage implements OnInit {
   handleDetailsClose() {
     this.isDetailsOpen = false;
     this.selectedStudent = null;
+  }
+
+  goToFirstPage() {
+    if (!this.isFirst) {
+      this.currentPage = 0;
+      this.loadStudents();
+    }
+  }
+
+  goToPreviousPage() {
+    if (!this.isFirst && this.currentPage > 0) {
+      this.currentPage--;
+      this.loadStudents();
+    }
+  }
+
+  goToNextPage() {
+    if (!this.isLast) {
+      this.currentPage++;
+      this.loadStudents();
+    }
   }
 
   private async presentToast(message: string) {

@@ -21,57 +21,33 @@
         class="student-form-form"
       >
         <ion-item lines="none">
-          <ion-label position="stacked">Name *</ion-label>
+          <ion-label position="stacked">First Name *</ion-label>
           <ion-input
-            formControlName="name"
-            placeholder="Enter full name"
+            formControlName="firstName"
+            placeholder="Enter first name"
             required
           >
           </ion-input>
         </ion-item>
 
         <ion-item lines="none">
-          <ion-label position="stacked">Email *</ion-label>
+          <ion-label position="stacked">Last Name *</ion-label>
           <ion-input
-            formControlName="email"
-            type="email"
-            placeholder="Enter email address"
+            formControlName="lastName"
+            placeholder="Enter last name"
             required
           >
           </ion-input>
         </ion-item>
 
         <ion-item lines="none">
-          <ion-label position="stacked">Phone Number</ion-label>
+          <ion-label position="stacked">Serial Number *</ion-label>
           <ion-input
-            formControlName="phoneNumber"
-            placeholder="Enter phone number"
+            formControlName="serialNumber"
+            placeholder="Enter serial number"
+            required
           >
           </ion-input>
-        </ion-item>
-
-        <ion-item lines="none">
-          <ion-label position="stacked">Date of Birth</ion-label>
-          <ion-input formControlName="dateOfBirth" type="date"> </ion-input>
-        </ion-item>
-
-        <ion-item lines="none">
-          <ion-label position="stacked">Address</ion-label>
-          <ion-input formControlName="address" placeholder="Enter address">
-          </ion-input>
-        </ion-item>
-
-        <ion-item lines="none">
-          <ion-label position="stacked">Enrollment Date</ion-label>
-          <ion-input formControlName="enrollmentDate" type="date"> </ion-input>
-        </ion-item>
-
-        <ion-item lines="none">
-          <ion-label position="stacked">Status</ion-label>
-          <ion-select formControlName="status">
-            <ion-select-option value="active">Active</ion-select-option>
-            <ion-select-option value="inactive">Inactive</ion-select-option>
-          </ion-select>
         </ion-item>
 
         <!-- Form Actions -->
