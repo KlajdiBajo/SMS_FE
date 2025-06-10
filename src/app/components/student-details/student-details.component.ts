@@ -9,6 +9,7 @@ import { addIcons } from 'ionicons';
 import { close, create, trash, add } from 'ionicons/icons';
 import { Student } from '../../interfaces/student.interface';
 import { Course } from '../../interfaces/course.interface';
+import { CourseService } from '../../services/course.service';
 
 @Component({
   selector: 'app-student-details',
@@ -31,19 +32,27 @@ export class StudentDetailsComponent {
   @Output() removeCourse = new EventEmitter<{ studentId: number; courseId: number }>();
 
   showCourseModal = false;
+  availableCourses: Course[] = [];
 
-  constructor() {
+  constructor(private courseService: CourseService) {
     addIcons({ close, create, trash, add });
   }
 
+  openCourseModal() {
+    this.courseService.filterCourses('', { pageNumber: 0, pageSize: 1000, sort: [] }).subscribe({
+      next: (res) => {
+        this.availableCourses = res.slice?.content || [];
+        this.showCourseModal = true;
+      }
+    });
+  }
+
   handleDelete() {
-    if (confirm('Are you sure you want to delete this student?')) {
-      this.delete.emit(this.student.id);
-    }
+    this.delete.emit(this.student.id);
   }
 
   handleRemoveCourse() {
-    if (this.student.course && confirm('Are you sure you want to remove this course from the student?')) {
+    if (this.student.course) {
       this.removeCourse.emit({ studentId: this.student.id, courseId: this.student.course.id });
     }
   }

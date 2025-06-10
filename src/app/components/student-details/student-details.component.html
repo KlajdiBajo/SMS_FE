@@ -40,7 +40,7 @@
             </ng-container>
             <ng-template #noCourse>
               <p>No course assigned</p>
-              <ion-button size="small" (click)="showCourseModal = true"
+              <ion-button size="small" (click)="openCourseModal()"
                 >Add Course</ion-button
               >
             </ng-template>
@@ -64,9 +64,28 @@
         </ion-button>
       </div>
       <div class="modal-content">
-        <!-- You should provide a list of available courses here -->
-        <p>Course selection goes here.</p>
-        <!-- Example: <ion-button (click)="handleAddCourse(course.id)">Add</ion-button> -->
+        <ng-container *ngIf="availableCourses.length > 0; else noCourses">
+          <div
+            *ngFor="let course of availableCourses"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              margin-bottom: 1rem;
+            "
+          >
+            <div>
+              <strong>{{ course.title }}</strong> ({{ course.code }}) - Year:
+              {{ course.year }}
+            </div>
+            <ion-button size="small" (click)="handleAddCourse(course.id)"
+              >Add</ion-button
+            >
+          </div>
+        </ng-container>
+        <ng-template #noCourses>
+          <p>No courses available.</p>
+        </ng-template>
       </div>
     </div>
   </div>
